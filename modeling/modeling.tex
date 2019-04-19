@@ -1,0 +1,76 @@
+\chapter{Modeling}
+
+\section{Motor Torque Modeling}
+
+Figure \ref{fig:motorcirc} shows a lumped element circuit of a conventional DC motor. The winding create a highly inductive load with resistance due to the size of the wires used. Notably, an additional voltage source should be considered to account for the back electromotive force (EMF)  that opposes the input $V_{RMS}$. This is from the coupling between the coils and motor armature, causing the motor to act like a generator when disturbed. The system can be described by the governing equation,
+
+\begin{equation}
+    V_{RMS} = I_a R_a + L_a \dot{I_a} + \sE.
+\end{equation}
+
+It is desired to relate the input voltage $V_{RMS}$ to the torque applied to the armature. It can be assumed that current is directly proportional to torque and that the back EMF is directly proportional to angular rate. This leads to the differential system,
+
+\begin{equation}
+    \left\{ {\begin{array}{*{20}{c}}
+  {{V_{RMS}} = {I_a}{R_a} + {L_a}\mathop {{I_a}}\limits^.  + {K_e}\omega } \\ 
+  {\dot \omega  = \frac{{{K_m}{I_a}}}{J}} 
+\end{array}} \right.
+\end{equation}
+
+This yields the linear state space representation
+
+\begin{equation}
+    \begin{aligned}
+    \begin{gathered}
+  \left[ {\begin{array}{*{20}{c}}
+  {{{\dot I}_a}} \\ 
+  {\dot \omega } 
+\end{array}} \right] = \left[ {\begin{array}{*{20}{c}}
+  { - {R_a}/{L_a}}&{ - {K_e}/{L_a}} \\ 
+  {{K_m}/J}&0 
+\end{array}} \right]\left[ {\begin{array}{*{20}{c}}
+  {{I_a}} \\ 
+  \omega  
+\end{array}} \right] + \left[ {\begin{array}{*{20}{c}}
+  1 \\ 
+  0 
+\end{array}} \right]{V_{RMS}} \hfill \\
+  \tau  = \left[ {\begin{array}{*{20}{c}}
+  {{K_m}}&0 
+\end{array}} \right]\left[ {\begin{array}{*{20}{c}}
+  {{I_a}} \\ 
+  \omega  
+\end{array}} \right] + 0 \hfill \\ 
+\end{gathered} 
+    \end{aligned}
+\end{equation}
+
+and the transfer function
+
+\begin{equation}
+    H(s) = \frac{K_m L_a J s}{ JL_a s^2 + J R_a s + K_m K_e}.
+\end{equation}
+
+When addressing the control of the motor in discrete time, it is helpful to have a discrete time version of the dynamics. So, an analogous system on the $z$-plane with sampling period $T$ is
+
+\begin{equation}
+    H(z) = \frac{K_m L_a J T (z-1)}{JL_a z^2 + (JR_aT - 2 J L_a ) z + (K_e K_m T^2 - J_a R_a T + JL_a)}.
+\end{equation}
+
+\begin{figure}
+\begin{center}
+\begin{circuitikz} [american voltages] \draw
+ (0,5) to [open, v^>=$V_{RMS}$] (0,0) 
+ (0, 5) to [short, *-, i=$I_a$] (1, 5)
+ to [R, l_=$R_a$] (5,5)
+ to [L, l=$L_a$] (5, 2)
+ to [V, l_=$\sE$]  (5,0)
+ (0, 0) to [short, *-] (5, 0)
+\end{circuitikz}
+\end{center}
+\caption{A motor can be modeled as a series RL circuit with an additional variable voltage source to account for the back EMF.}
+\label{fig:motorcirc}
+\end{figure}
+
+\subsection{PWM Converter}
+

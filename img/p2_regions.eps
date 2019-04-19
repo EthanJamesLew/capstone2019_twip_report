@@ -1,0 +1,4086 @@
+%!PS-Adobe-3.0 EPSF-3.0
+%%BoundingBox: 20 118 575 673
+%%Creator: FreeHEP Graphics2D Driver
+%%Producer: com.maplesoft.mathdoc.view.plot.paint.PlotPSGraphics2D Revision: 12753 
+%%For: 
+%%Title: 
+%%CreationDate: Friday, April 5, 2019 11:51:59 PM PDT
+%%LanguageLevel: 3
+%%EndComments
+%%BeginProlog
+100 dict dup begin
+
+%
+% File: org/freehep/graphicsio.ps/PSProlog.txt
+% Author: Charles Loomis
+%
+
+% Redefinitions which save some space in the output file.  These are also
+% the same as the PDF operators.
+/q {gsave} def
+/Q {grestore} def
+
+/n {newpath} def
+/m {moveto} def
+/l {lineto} def
+/c {curveto} def
+/h {closepath} def
+
+/re {4 -2 roll moveto
+     dup 0 exch rlineto exch 0 rlineto
+     neg 0 exch rlineto closepath} def
+
+/f {fill} def
+/f* {eofill} def
+/F {gsave vg&FC fill grestore} def
+/F* {gsave vg&FC eofill grestore} def
+
+/s {closepath stroke} def
+/S {stroke} def
+
+/b {closepath gsave vg&FC fill grestore
+    gsave stroke grestore newpath} def
+/B {gsave vg&FC fill grestore gsave stroke grestore newpath} def
+/b* {closepath gsave vg&FC eofill grestore
+    gsave stroke grestore newpath} def
+/B* {gsave vg&FC eofill grestore gsave stroke grestore newpath} def
+
+/g {1 array astore /vg&fcolor exch def} def
+/G {setgray} def
+/k {4 array astore /vg&fcolor exch def} def
+/K {setcmykcolor} def
+/rg {3 array astore /vg&fcolor exch def} def
+/RG {setrgbcolor} def
+
+% Initialize the fill color.
+0 0 0 rg
+
+/vg&FC {mark vg&fcolor aload pop
+        counttomark 1 eq {G} if
+        counttomark 3 eq {RG} if
+        counttomark 4 eq {K} if
+        cleartomark } def
+
+/vg&DFC {/vg&fcolor exch def} def
+
+/vg&C {mark exch aload pop
+       counttomark 1 eq {G} if
+       counttomark 3 eq {RG} if
+       counttomark 4 eq {K} if
+       cleartomark } def
+
+/w {setlinewidth} def
+/j {setlinejoin} def
+/J {setlinecap} def
+/M {setmiterlimit} def
+/d {setdash} def
+/i {setflat} def
+
+/W {clip} def
+/W* {eoclip} def
+
+% Setup the default graphics state.
+% (black; 1 pt. linewidth; miter join; butt-ends; solid)
+/defaultGraphicsState {0 g 1 w 0 j 0 J [] 0 d} def
+
+% Emulation of the rectangle operators for PostScript implementations
+% which do not implement all Level 2 features.  This is an INCOMPLETE
+% emulation; only the "x y width height rect..." form is emulated.
+/*rf {gsave newpath re fill grestore} def
+/*rs {gsave newpath re stroke grestore} def
+/*rc {newpath re clip} def
+/rf  /rectfill where {pop /rectfill}{/*rf} ifelse load def
+/rs  /rectstroke where {pop /rectstroke}{/*rs} ifelse load def
+/rc  /rectclip where {pop /rectclip}{/*rc} ifelse load def
+
+% Emulation of the selectfont operator.  This includes a 20% increase in
+% the fontsize which is necessary to get sizes similar to the Java fonts.
+/*sf {exch findfont exch
+      dup type /arraytype eq {makefont}{scalefont} ifelse setfont} bind def
+/sf /selectfont where {pop {1.2 mul selectfont}}{{1.2 mul *sf}} ifelse def
+
+% Special version of stroke which allows the dash pattern to continue
+% across path segments.  (This may be needed for PostScript although
+% modern printers seem to do this correctly.)
+/vg&stroke {
+  currentdash pop length 0 eq
+  {stroke}
+  {
+    currentdash /vg&doffset exch def pop
+    flattenpath
+    {m vg&resetdash}
+    {2 copy
+     currentpoint
+     3 -1 roll sub dup mul
+     3 1 roll sub dup mul
+     add sqrt
+     3 1 roll l
+     currentdash 3 -1 roll add setdash}
+     {}
+     {h vg&resetdash}
+     pathforall
+     stroke
+     vg&resetdash
+  } ifelse
+} def
+/vg&resetdash {currentdash pop vg&doffset setdash} def
+
+% Initialize variables for safety.
+/delta 0 def
+/xv 0 def  /yv 0 def  /width 0 def  /height 0 def
+
+% Initialize to portrait INTERNATIONAL (Letter-height, A4-width) page.
+/pw 595 def  /ph 791  def  /po true def /ftp false def
+
+% Initialize margins to 20 points.
+/ml 20 def  /mr 20 def  /mt 20 def  /mb 20 def
+
+% Temporary matrices.
+/smatrix 0 def  /nmatrix 0 def
+
+% set page size (usage: <page width><page height> setpagesize)
+/setpagesize {/ph exch def /pw exch def} def
+
+% set page orientation (usage: portrait or landscape)
+/portrait {/po true def} def
+/landscape {/po false def} def
+
+% force natural size for image (usage: naturalsize)
+/naturalsize {/ftp false def} def
+
+% resize image to fill page (usage: fittopage)
+/fittopage {/ftp true def} def
+
+% set margins of the page (usage: <left><bottom><top><right> setmargins)
+/setmargins {/mr exch def /mt exch def /mb exch def /ml exch def} def
+
+% set the graphic's size (usage: <width><height> setsize)
+/setsize {/gh exch def /gw exch def} def
+
+% set the graphic's origin (usage: <x0><y0> setorigin)
+/setorigin {/gy exch def /gx exch def} def
+
+% calculate image center
+/imagecenter {pw ml sub mr sub 2 div ml add
+              ph mt sub mb sub 2 div mb add} def
+
+% calculate the necessary scaling
+/imagescale {po {gw}{gh} ifelse pw ml sub mr sub div
+             po {gh}{gw} ifelse ph mt sub mb sub div
+             2 copy lt {exch} if pop
+             ftp not {1 2 copy lt {exch} if pop} if
+             1 exch div /sfactor exch def
+             /gw gw sfactor mul def /gh gh sfactor mul def} def
+
+% calculate image origin
+/imageorigin {pw ml sub mr sub 2 div ml add
+              po {gw}{gh} ifelse 2 div sub
+              ph mt sub mb sub 2 div mb add
+              po {gh}{gw} ifelse 2 div po {add}{sub} ifelse} def
+
+% calculate the clipping origin
+/cliporigin  {pw ml sub mr sub 2 div ml add
+              po {gw}{gh} ifelse 2 div sub floor
+              ph mt sub mb sub 2 div mb add
+              po {gh}{gw} ifelse 2 div sub floor} def
+
+% Set the clipping region to the bounding box.
+/cliptobounds {cliporigin po {gw}{gh} ifelse 1 add
+                          po {gh}{gw} ifelse 1 add rc} def
+
+% set the base transformation matrix (usage: setbasematrix)
+/setbasematrix {imageorigin translate
+                po {0}{90} ifelse rotate
+                sfactor sfactor neg scale
+                /defaultmatrix matrix currentmatrix def} def
+
+% The lower-right bias in drawing 1 pt. wide lines.
+/bias  {q 0.5 0.5 translate} def
+/unbias {Q} def
+
+% Draw a line. (x0 y0 x1 y1 line)
+/L {bias n m l S unbias} def
+
+% Polyline primitive.
+/polyline  {n m 1 exch 1 exch
+           {pop currentfile token pop currentfile token pop l} for
+           } def
+
+% Draw a polyline (n x0 y0 OPL x1 y1 x2 y2 ... ... xn yn)
+/OPL {bias polyline S unbias} def
+
+% Draw a closed polyline (n x0 y0 CPL x1 y1 x2 y2 ... ... xn yn)
+/CPL {bias polyline s unbias} def
+
+% Draw a filled polyline (n x0 y0 FPL x1 y1 x2 y2 ... ... xn yn)
+/FPL {polyline h f*} def
+
+% Draw an oval. (x y w h OVL)
+/OVL {matrix currentmatrix /smatrix exch def
+      /height exch def /width exch def
+      /yv exch def /xv exch def
+      width 2 div xv add height 2 div yv add translate
+      width currentlinewidth sub 2 div
+      height currentlinewidth sub 2 div neg
+      scale n 0 0 1 5 -2 roll arc
+      smatrix setmatrix S} def
+
+% Draw a filled oval. (x y w h FOVL)
+/FOVL {matrix currentmatrix /smatrix exch def
+      /height exch def /width exch def
+      /yv exch def /xv exch def
+      width 2 div xv add height 2 div yv add translate
+      width 2 div
+      height 2 div neg
+      scale n 0 0 m 0 0 1 5 -2 roll arc
+      h smatrix setmatrix f} def
+
+% Draw a rounded rectangle. (x y w h arcwidth archeight RREC)
+/RREC {matrix currentmatrix /smatrix exch def
+      2 div /ah exch def
+      2 div /aw exch def
+      /height exch def /width exch def
+      /yv exch def /xv exch def
+      aw ah scale matrix
+      currentmatrix /nmatrix exch def
+      smatrix setmatrix
+      n xv width add aw sub yv m
+      nmatrix setmatrix
+      currentpoint exch 1 add exch
+      currentpoint 1 add exch 1 add exch
+      1 arct smatrix setmatrix
+      xv width add yv height add ah sub l
+      nmatrix setmatrix
+      currentpoint 1 add
+      currentpoint exch 1 sub exch 1 add
+      1 arct smatrix setmatrix
+      xv aw add yv height add l
+      nmatrix setmatrix
+      currentpoint exch 1 sub exch
+      currentpoint exch 1 sub exch 1 sub
+      1 arct smatrix setmatrix
+      xv yv ah add l
+      nmatrix setmatrix
+      currentpoint 1 sub
+      currentpoint exch 1 add exch 1 sub
+      1 arct smatrix setmatrix
+      s} def
+
+% Draw a filled rounded rectangle. (x y w h arcwidth archeight FRREC)
+/FRREC{matrix currentmatrix /smatrix exch def
+      2 div /ah exch def
+      2 div /aw exch def
+      /height exch def /width exch def
+      /yv exch def /xv exch def
+      aw ah scale matrix
+      currentmatrix /nmatrix exch def
+      smatrix setmatrix
+      n xv width add aw sub yv m
+      nmatrix setmatrix
+      currentpoint exch 1 add exch
+      currentpoint 1 add exch 1 add exch
+      1 arct smatrix setmatrix
+      xv width add yv height add ah sub l
+      nmatrix setmatrix
+      currentpoint 1 add
+      currentpoint exch 1 sub exch 1 add
+      1 arct smatrix setmatrix
+      xv aw add yv height add l
+      nmatrix setmatrix
+      currentpoint exch 1 sub exch
+      currentpoint exch 1 sub exch 1 sub
+      1 arct smatrix setmatrix
+      xv yv ah add l
+      nmatrix setmatrix
+      currentpoint 1 sub
+      currentpoint exch 1 add exch 1 sub
+      1 arct smatrix setmatrix
+      h f} def
+
+% Draw a string.  (string x y STR)
+/STR {q m 1 -1 scale recshow Q} def
+
+% Define basic plot symbols.
+/xys   {/siz exch def /yv exch def /xv exch def} def
+/hline {xys n xv siz 2. div sub yv m siz 0 rlineto S} def
+/vline {xys n xv yv siz 2. div sub m 0 siz rlineto S} def
+/plus  {xys n xv yv siz 2. div sub m 0 siz rlineto
+                    xv siz 2. div sub yv m siz 0 rlineto S} def
+/dot   {n 2. div 0 360 arc s} def
+/fdot  {n 2. div 0 360 arc h f} def
+/box   {xys n xv siz 2 sqrt div 2 div sub yv siz 2 sqrt div 2 div sub
+                    siz 2 sqrt div dup rs} def
+/fbox  {xys n xv siz 2 sqrt div 2 div sub yv siz 2 sqrt div 2 div sub
+                       siz 2 sqrt div dup rf} def
+/tridn{xys n xv yv siz 3 sqrt div add m
+                       siz 2. div neg 3 sqrt 2. div siz mul neg rlineto
+                       siz 0 rlineto s} def
+/ftridn{xys n xv yv siz 3 sqrt div add m
+                       siz 2. div neg 3 sqrt 2. div siz mul neg rlineto
+                       siz 0 rlineto h f} def
+
+% Symbols defined in terms of the others.
+/star     {3 copy cross plus} def
+/cross    {xys q xv yv translate 45 rotate 0 0 siz plus Q} def
+/diamond  {xys q xv yv translate 45 rotate 0 0 siz box Q} def
+/fdiamond {xys q xv yv translate 45 rotate 0 0 siz fbox Q} def
+/triup    {xys q xv yv translate 180 rotate 0 0 siz tridn Q} def
+/ftriup   {xys q xv yv translate 180 rotate 0 0 siz ftridn Q} def
+
+% Define the composite fonts used to print Unicode strings.
+% Undefine particular values in an encoding array.
+/vg&undef { {exch dup 3 -1 roll /.notdef put} forall } def
+/vg&redef { {3 -1 roll dup 4 2 roll put} forall } def
+
+% usage: key encoding basefontname vg&newbasefont font
+/vg&newbasefont {
+findfont dup length dict copy
+  begin
+    currentdict /FID undef
+    /Encoding exch def
+    dup /FontName exch def
+    currentdict
+  end
+definefont
+} def
+
+% usage: key encoding basefontname vg&newskewedbasefont font
+/vg&newskewedbasefont {
+findfont dup length dict copy
+  begin
+    currentdict /FID undef
+    /Encoding exch def
+    dup /FontName exch def
+    exch FontMatrix exch matrix concatmatrix /FontMatrix exch def
+    currentdict
+  end
+definefont
+} def
+
+% usage: basekey suffix vg&nconcat name
+/vg&nconcat {
+  2 {dup length string cvs exch} repeat
+  dup length 3 -1 roll dup length 3 -1 roll add string
+  dup 0 4 -1 roll dup length 5 1 roll putinterval
+  dup 4 -2 roll exch putinterval cvn
+} def
+
+%usage: fontname vg&skewmatrix matrix
+/vg&skewmatrix {
+findfont dup /FontInfo known
+  {
+    /FontInfo get dup /ItalicAngle known
+    {
+      [ 1 0 4 -1 roll /ItalicAngle get neg dup sin exch cos div 1 0 0 ]
+    }
+    {pop matrix} ifelse
+  }
+  {pop matrix} ifelse
+} def
+
+% usage: newfontname basefontname vg&newcompositefont --
+/vg&newcompositefont {
+/vg&fstyle exch def
+/vg&bfont exch def
+/vg&fname exch def
+<<
+/FontStyleBits vg&fstyle
+/FontType 0
+/FontMatrix matrix
+/FontName vg&fname
+/FMapType 2
+/Encoding [ 0 1 255 {pop 6} for ]
+          dup 16#00 0 put % Latin
+          dup 16#03 1 put % Greek
+          dup 16#20 2 put % Punctuation
+          dup 16#21 3 put % Arrows
+          dup 16#22 4 put % MathOps
+          dup 16#27 5 put % Dingbats
+
+/FDepVector [
+vg&bfont /-UC-Latin vg&nconcat UCLatinEncoding
+vg&bfont vg&newbasefont
+
+vg&bfont vg&skewmatrix
+vg&bfont /-UC-Greek vg&nconcat UCGreekEncoding
+/Symbol vg&newskewedbasefont
+
+vg&bfont /-UC-Punctuation vg&nconcat UCPunctuationEncoding
+vg&bfont vg&newbasefont
+
+/Arrows-UC findfont
+/MathOps-UC findfont
+/Dingbats-UC findfont
+/Undefined-UC findfont ]
+>>
+vg&fname exch definefont pop
+} def
+
+% Null encoding vector (all elements set to .notdef)
+/NullEncoding [ 256 {/.notdef} repeat ] def
+
+% Unicode Latin encoding (unicode codes \u0000-\u00ff)
+/UCLatinEncoding
+  ISOLatin1Encoding dup length array copy
+  dup 16#60 /grave put
+  [ 16#90 16#91 16#92 16#93 16#94 16#95 16#96
+    16#97 16#98 16#9a 16#9b 16#9d 16#9e 16#9f
+  ] vg&undef
+  def
+
+% Unicode Greek encoding (unicode codes \u0370-\u03ff)
+/UCGreekEncoding
+  NullEncoding dup length array copy
+  << 16#91 /Alpha    16#92 /Beta      16#93 /Gamma    16#94 /Delta
+     16#95 /Epsilon  16#96 /Zeta      16#97 /Eta      16#98 /Theta
+     16#99 /Iota     16#9a /Kappa     16#9b /Lambda   16#9c /Mu
+     16#9d /Nu       16#9e /Xi        16#9f /Omicron  16#a0 /Pi
+     16#a1 /Rho      16#a3 /Sigma     16#a4 /Tau      16#a5 /Upsilon
+     16#a6 /Phi      16#a7 /Chi       16#a8 /Psi      16#a9 /Omega
+     16#b1 /alpha    16#b2 /beta      16#b3 /gamma    16#b4 /delta
+     16#b5 /epsilon  16#b6 /zeta      16#b7 /eta      16#b8 /theta
+     16#b9 /iota     16#ba /kappa     16#bb /lambda   16#bc /mu
+     16#bd /nu       16#be /xi        16#bf /omicron  16#c0 /pi
+     16#c1 /rho      16#c2 /sigma1    16#c3 /sigma    16#c4 /tau
+     16#c5 /upsilon  16#c6 /phi1      16#c7 /chi      16#c8 /psi
+     16#c9 /omega    16#7e /semicolon 16#87 /dotmath  16#d1 /theta1
+     16#d2 /Upsilon1 16#d5 /phi       16#d6 /omega1
+  >> vg&redef
+  def
+
+% Unicode punctuation encoding (unicode codes \u2000-\u206f)
+/UCPunctuationEncoding
+  NullEncoding dup length array copy
+  << 16#10 /hyphen          16#11 /hyphen              16#12 /endash
+     16#13 /emdash          16#18 /quoteleft           16#19 /quoteright
+     16#1a /quotesinglbase  16#1b /quotesingle         16#1c /quotedblleft
+     16#1d /quotedblright   16#1e /quotedblbase        16#1f /quotedbl
+     16#20 /dagger          16#21 /daggerdbl           16#22 /bullet
+     16#24 /period          16#26 /ellipsis            16#27 /periodcentered
+     16#30 /perthousand     16#44 /fraction
+     16#70 /zerosuperior    16#74 /foursuperior        16#75 /fivesuperior
+     16#76 /sixsuperior     16#77 /sevensuperior       16#78 /eightsuperior
+     16#79 /ninesuperior    16#7b /hyphensuperior      16#7d /parenleftsuperior
+     16#7e /parenrightsuperior
+     16#80 /zeroinferior    16#84 /fourinferior        16#85 /fiveinferior
+     16#81 /oneinferior     16#82 /twoinferior         16#83 /threeinferior
+     16#86 /sixinferior     16#87 /seveninferior       16#88 /eightinferior
+     16#89 /nineinferior    16#8b /hypheninferior      16#8d /parenleftinferior
+     16#8e /parenrightinferior
+  >> vg&redef
+  def
+
+% Unicode mathematical operators encoding (unicode codes \u2200-\u22ff)
+/UCMathOpsEncoding
+  NullEncoding dup length array copy
+  << 16#00 /universal       16#02 /partialdiff         16#03 /existential
+     16#05 /emptyset        16#06 /Delta               16#07 /gradient
+     16#08 /element         16#09 /notelement          16#0b /suchthat
+     16#0f /product         16#11 /summation           16#12 /minus
+     16#15 /fraction        16#17 /asteriskmath        16#19 /bullet
+     16#1a /radical         16#1d /proportional        16#1e /infinity
+     16#20 /angle           16#23 /bar                 16#27 /logicaland
+     16#28 /logicalor       16#29 /intersection        16#2a /union
+     16#2b /integral        16#34 /therefore           16#36 /colon
+     16#3c /similar         16#45 /congruent           16#48 /approxequal
+     16#60 /notequal        16#61 /equivalence         16#64 /lessequal
+     16#65 /greaterequal    16#82 /propersubset        16#83 /propersuperset
+     16#86 /reflexsubset    16#87 /reflexsuperset      16#95 /circleplus
+     16#97 /circlemultiply  16#a5 /perpendicular       16#03 /existential
+     16#c0 /logicaland      16#c1 /logicalor           16#c2 /intersection
+     16#c3 /union           16#c4 /diamond             16#c5 /dotmath
+  >> vg&redef
+  def
+
+% Unicode arrows encoding (unicode codes \u2190-\u21ff)
+% Also includes those "Letterlike" unicode characters
+% which are available in the symbol font. (unicode codes \u2100-\u214f)
+/UCArrowsEncoding
+  NullEncoding dup length array copy
+  << 16#11 /Ifraktur        16#1c /Rfraktur            16#22 /trademarkserif
+     16#35 /aleph
+     16#90 /arrowleft       16#91 /arrowup             16#92 /arrowright
+     16#93 /arrowdown       16#94 /arrowboth           16#d0 /arrowdblleft
+     16#d1 /arrowdblup      16#d2 /arrowdblright       16#d3 /arrowdbldown
+     16#d4 /arrowdblboth
+  >> vg&redef
+  def
+
+/ZapfDingbats findfont /Encoding get
+dup length array copy /UCDingbatsEncoding exch def
+16#20 1 16#7f {
+  dup 16#20 sub exch
+  UCDingbatsEncoding exch get
+  UCDingbatsEncoding 3 1 roll put
+} for
+16#a0 1 16#ff {
+  dup 16#40 sub exch
+  UCDingbatsEncoding exch get
+  UCDingbatsEncoding 3 1 roll put
+} for
+UCDingbatsEncoding [ 16#c0 1 16#ff {} for ] vg&undef
+[ 16#00  16#05 16#0a 16#0b  16#28 16#4c 16#4e  16#53 16#54 16#55  16#57 16#5f
+  16#60  16#68 16#69 16#6a  16#6b 16#6c 16#6d  16#6e 16#6f 16#70  16#71 16#72
+  16#73  16#74 16#75 16#95  16#96 16#97 16#b0  16#bf
+] vg&undef pop
+
+% Define the base fonts which don't change.
+/Undefined-UC NullEncoding       /Helvetica    vg&newbasefont pop
+/MathOps-UC   UCMathOpsEncoding  /Symbol       vg&newbasefont pop
+/Arrows-UC    UCArrowsEncoding   /Symbol       vg&newbasefont pop
+/Dingbats-UC  UCDingbatsEncoding /ZapfDingbats vg&newbasefont pop
+
+% Make the SansSerif composite fonts.
+/SansSerif /Helvetica 16#00 vg&newcompositefont
+/SansSerif-Bold /Helvetica-Bold 16#01 vg&newcompositefont
+/SansSerif-Italic /Helvetica-Oblique 16#02 vg&newcompositefont
+/SansSerif-BoldItalic /Helvetica-BoldOblique 16#03 vg&newcompositefont
+
+% Make the Serif composite fonts.
+/Serif /Times-Roman 16#00 vg&newcompositefont
+/Serif-Bold /Times-Bold 16#01 vg&newcompositefont
+/Serif-Italic /Times-Italic 16#02 vg&newcompositefont
+/Serif-BoldItalic /Times-BoldItalic 16#03 vg&newcompositefont
+
+% Make the Monospaced composite fonts.
+/Monospaced /Courier 16#00 vg&newcompositefont
+/Monospaced-Bold /Courier-Bold 16#01 vg&newcompositefont
+/Monospaced-Italic /Courier-Oblique 16#02 vg&newcompositefont
+/Monospaced-BoldItalic /Courier-BoldOblique 16#03 vg&newcompositefont
+
+% Make the Dialog composite fonts.
+/Dialog /Helvetica 16#00 vg&newcompositefont
+/Dialog-Bold /Helvetica-Bold 16#01 vg&newcompositefont
+/Dialog-Italic /Helvetica-Oblique 16#02 vg&newcompositefont
+/Dialog-BoldItalic /Helvetica-BoldOblique 16#03 vg&newcompositefont
+
+% Make the DialogInput composite fonts.
+/DialogInput /Helvetica 16#00 vg&newcompositefont
+/DialogInput-Bold /Helvetica-Bold 16#01 vg&newcompositefont
+/DialogInput-Italic /Helvetica-Oblique 16#02 vg&newcompositefont
+/DialogInput-BoldItalic /Helvetica-BoldOblique 16#03 vg&newcompositefont
+
+% Make the Typewriter composite fonts (JDK 1.1 only).
+/Typewriter /Courier 16#00 vg&newcompositefont
+/Typewriter-Bold /Courier-Bold 16#01 vg&newcompositefont
+/Typewriter-Italic /Courier-Oblique 16#02 vg&newcompositefont
+/Typewriter-BoldItalic /Courier-BoldOblique 16#03 vg&newcompositefont
+
+
+/cfontH {
+ dup /fontsize exch def /SansSerif exch sf
+ /vg&fontstyles [{cfontH} {cfontHB} {cfontHI} {cfontHBI}] def
+} def
+/cfontHB {
+  dup /fontsize exch def /SansSerif-Bold exch sf
+ /vg&fontstyles [{cfontH} {cfontHB} {cfontHI} {cfontHBI}] def
+} def
+/cfontHI {
+ dup /fontsize exch def /SansSerif-Italic exch sf
+ /vg&fontstyles [{cfontH} {cfontHB} {cfontHI} {cfontHBI}] def
+} def
+/cfontHBI {
+ dup /fontsize exch def /SansSerif-BoldItalic exch sf
+ /vg&fontstyles [{cfontH} {cfontHB} {cfontHI} {cfontHBI}] def
+} def
+
+/cfontT {
+ dup /fontsize exch def /Serif exch sf
+ /vg&fontstyles [{cfontT} {cfontTB} {cfontTI} {cfontTBI}] def
+} def
+/cfontTB {
+ dup /fontsize exch def /Serif-Bold exch sf
+ /vg&fontstyles [{cfontT} {cfontTB} {cfontTI} {cfontTBI}] def
+} def
+/cfontTI {
+ dup /fontsize exch def /Serif-Italic exch sf
+ /vg&fontstyles [{cfontT} {cfontTB} {cfontTI} {cfontTBI}] def
+} def
+/cfontTBI {
+ dup /fontsize exch def /Serif-BoldItalic exch sf
+ /vg&fontstyles [{cfontT} {cfontTB} {cfontTI} {cfontTBI}] def
+} def
+
+/cfontC {
+ dup /fontsize exch def /Typewriter exch sf
+ /vg&fontstyles [{cfontC} {cfontCB} {cfontCI} {cfontCBI}] def
+} def
+/cfontCB {
+ dup /fontsize exch def /Typewriter-Bold exch sf
+ /vg&fontstyles [{cfontC} {cfontCB} {cfontCI} {cfontCBI}] def
+} def
+/cfontCI {
+ dup /fontsize exch def /Typewriter-Italic exch sf
+ /vg&fontstyles [{cfontC} {cfontCB} {cfontCI} {cfontCBI}] def
+} def
+/cfontCBI {
+ dup /fontsize exch def /Typewriter-BoldItalic exch sf
+ /vg&fontstyles [{cfontC} {cfontCB} {cfontCI} {cfontCBI}] def
+} def
+
+% Darken or lighten the current color.
+/darken {0.7 exch exp 3 copy
+         q 4 -1 roll vg&C
+         currentrgbcolor 3 {4 -2 roll mul} repeat
+         3 array astore Q} def
+
+/displayColorMap
+<< /Cr   [1.00 0.00 0.00]       /Cg     [0.00 1.00 0.00]
+   /Cb   [0.00 0.00 1.00]       /Cc     [1.00 0.00 0.00 0.00]
+   /Cm   [0.00 1.00 0.00 0.00]  /Cy     [0.00 0.00 1.00 0.00]
+   /Co   [1.00 0.78 0.00]       /Cp     [1.00 0.67 0.67]
+   /Cw   [1   ]                 /Cgrl   [0.75]
+   /Cgr  [0.50]                 /Cgrd   [0.25]
+   /Ck   [0   ]
+   /CGr  [1.00 0.00 0.00]       /CGg    [0.00 1.00 0.00]
+   /CGb  [0.00 0.00 1.00]       /CGc    [1.00 0.00 0.00 0.00]
+   /CGm  [0.00 1.00 0.00 0.00]  /CGy    [0.00 0.00 1.00 0.00]
+   /CGo  [1.00 0.78 0.00]       /CGp    [1.00 0.67 0.67]
+   /CGw  [1   ]                 /CGgrl  [0.75]
+   /CGgr [0.50]                 /CGgrd  [0.25]
+   /CGk  [0   ]
+   /CIr  [1.00 0.00 0.00]       /CIg    [0.00 1.00 0.00]
+   /CIb  [0.00 0.00 1.00]       /CIc    [1.00 0.00 0.00 0.00]
+   /CIm  [0.00 1.00 0.00 0.00]  /CIy    [0.00 0.00 1.00 0.00]
+   /CIo  [1.00 0.78 0.00]       /CIp    [1.00 0.67 0.67]
+   /CIw  [1   ]                 /CIgrl  [0.75]
+   /CIgr [0.50]                 /CIgrd  [0.25]
+   /CIk  [0   ]
+>> def
+
+/printColorMap
+<< /Cr   [1.00 0.33 0.33]       /Cg     [0.33 1.00 0.33]
+   /Cb   [0.33 0.33 1.00]       /Cc     [1.00 0.00 0.00 0.00]
+   /Cm   [0.00 1.00 0.00 0.00]  /Cy     [0.00 0.00 1.00 0.00]
+   /Co   [1.00 0.78 0.00]       /Cp     [1.00 0.67 0.67]
+   /Cw   [1   ]                 /Cgrl   [0.75]
+   /Cgr  [0.50]                 /Cgrd   [0.25]
+   /Ck   [0   ]
+   /CGr  [1.00 0.33 0.33]       /CGg    [0.33 1.00 0.33]
+   /CGb  [0.33 0.33 1.00]       /CGc    [1.00 0.00 0.00 0.00]
+   /CGm  [0.00 1.00 0.00 0.00]  /CGy    [0.00 0.00 1.00 0.00]
+   /CGo  [1.00 0.78 0.00]       /CGp    [1.00 0.67 0.67]
+   /CGw  [1   ]                 /CGgrl  [0.75]
+   /CGgr [0.50]                 /CGgrd  [0.25]
+   /CGk  [0   ]
+   /CIr  [1.00 0.33 0.33]       /CIg    [0.33 1.00 0.33]
+   /CIb  [0.33 0.33 1.00]       /CIc    [1.00 0.00 0.00 0.00]
+   /CIm  [0.00 1.00 0.00 0.00]  /CIy    [0.00 0.00 1.00 0.00]
+   /CIo  [1.00 0.78 0.00]       /CIp    [1.00 0.67 0.67]
+   /CIw  [1   ]                 /CIgrl  [0.75]
+   /CIgr [0.50]                 /CIgrd  [0.25]
+   /CIk  [0   ]
+>> def
+
+/grayColorMap
+<< /Cr   [0   ]                 /Cg     [0   ]
+   /Cb   [0   ]                 /Cc     [0   ]
+   /Cm   [0   ]                 /Cy     [0   ]
+   /Co   [0   ]                 /Cp     [0   ]
+   /Cw   [0   ]                 /Cgrl   [0   ]
+   /Cgr  [0   ]                 /Cgrd   [0   ]
+   /Ck   [0   ]
+   /CGr  [0.75]                 /CGg    [1   ]
+   /CGb  [0.50]                 /CGc    [0.75]
+   /CGm  [0.50]                 /CGy    [1   ]
+   /CGo  [0.75]                 /CGp    [1   ]
+   /CGw  [0   ]                 /CGgrl  [0.25]
+   /CGgr [0.50]                 /CGgrd  [0.75]
+   /CGk  [1   ]
+   /CIr  [1   ]                 /CIg    [1   ]
+   /CIb  [1   ]                 /CIc    [1   ]
+   /CIm  [1   ]                 /CIy    [1   ]
+   /CIo  [1   ]                 /CIp    [1   ]
+   /CIw  [1   ]                 /CIgrl  [1   ]
+   /CIgr [1   ]                 /CIgrd  [1   ]
+   /CIk  [1   ]
+>> def
+
+/bwColorMap
+<< /Cr   [0   ]                 /Cg     [0   ]
+   /Cb   [0   ]                 /Cc     [0   ]
+   /Cm   [0   ]                 /Cy     [0   ]
+   /Co   [0   ]                 /Cp     [0   ]
+   /Cw   [0   ]                 /Cgrl   [0   ]
+   /Cgr  [0   ]                 /Cgrd   [0   ]
+   /Ck   [0   ]
+   /CGr  [1   ]                 /CGg    [1   ]
+   /CGb  [1   ]                 /CGc    [1   ]
+   /CGm  [1   ]                 /CGy    [1   ]
+   /CGo  [1   ]                 /CGp    [1   ]
+   /CGw  [0   ]                 /CGgrl  [1   ]
+   /CGgr [1   ]                 /CGgrd  [1   ]
+   /CGk  [1   ]
+   /CIr  [1   ]                 /CIg    [1   ]
+   /CIb  [1   ]                 /CIc    [1   ]
+   /CIm  [1   ]                 /CIy    [1   ]
+   /CIo  [1   ]                 /CIp    [1   ]
+   /CIw  [1   ]                 /CIgrl  [1   ]
+   /CIgr [1   ]                 /CIgrd  [1   ]
+   /CIk  [1   ]
+>> def
+
+%
+% The following routines handle the alignment of and printing of
+% tagged strings.
+%
+
+% Predefine the bounding box values.
+/bbllx 0 def /bblly 0 def /bburx 0 def /bbury 0 def
+
+% This routine pops the first unicode character off of a string and returns
+% the remainder of the string, the character code of first character,
+% and a "true" if the string was non-zero length.
+% <string>      popfirst <remaining string> <true>
+% <null string> popfirst <false>
+/popfirst {
+  dup length 1 gt
+    {dup 0 get /vg&fbyte exch def
+     dup 1 get /vg&cbyte exch def
+     dup length 2 sub 2 exch getinterval true}
+    {pop false} ifelse
+} def
+
+% This routine shows a single unicode character given the font and
+% character codes.
+% <font code> <char code> unicharshow --
+/unicharshow {
+  2 string
+  dup 0 5 -1 roll put
+  dup 1 4 -1 roll put
+  internalshow
+} def
+
+% This is an internal routine to alternate between determining the
+% bounding box for stringsize and showing the string for recshow.
+% <string> internalshow --
+/internalshow {show} def
+
+% This is an internal routine to alternate between determining the
+% bounding box for stringsize and stroking various ornaments.
+% <string> internalstroke --
+/internalstroke {S} def
+
+% Sets up internalshow to use the null device to determine string size.
+% -- nullinternalshow --
+/nullinternalshow {/internalshow {false charpath flattenpath
+                                  pathbbox updatebbox} def} def
+
+% Sets up internalstroke to use the null device to determine string size.
+% -- nullinternalstroke --
+/nullinternalstroke {
+ /internalstroke {flattenpath pathbbox updatebbox} def} def
+
+% This routine tests to see if the character code matches the first
+% character of a string.
+% <char code> <string> testchar <char code> <true or false>
+/testchar {exch dup 3 -1 roll 0 get eq} def
+
+% Raise the text baseline for superscripts.
+% -- raise --
+/raise {
+  0 fontsize 2 div rmoveto
+  /fontsize fontsize 2 mul 3 div def
+  currentfont /FontName get fontsize sf
+} def
+
+% Un-raise the text baseline for superscripts.
+% -- unraise --
+/unraise {
+  /fontsize fontsize 1.5 mul def
+  0 fontsize 2 div neg rmoveto
+} def
+
+% Lower the text baseline for subscripts.
+% -- lower --
+/lower {
+  0 fontsize 3 div neg rmoveto
+  /fontsize fontsize 2 mul 3 div def
+  currentfont /FontName get fontsize sf
+} def
+
+% Un-lower the text baseline for subscripts.
+% -- unlower --
+/unlower {
+  /fontsize fontsize 1.5 mul def
+  0 fontsize 3 div rmoveto
+} def
+
+% Compare the top two elements on the stack and leave only the
+% larger one.
+/maxval {2 copy gt {pop} {exch pop} ifelse} def
+
+% Tokenize a string.  Do not use the usual PostScript token because
+% parentheses will not be interpreted correctly because of rescanning
+% of the string.
+/vg&token {/vg&string exch def /vg&index -1 def /vg&level 0 def
+0 2 vg&string length 2 sub {
+  dup dup 1 add exch vg&string exch get 8 bitshift vg&string 3 -1 roll get or
+  dup 16#f0fe eq {pop 1}{16#f0ff eq {-1}{0} ifelse} ifelse
+  /vg&level exch vg&level add def
+  vg&level 0 eq {/vg&index exch def exit} if pop
+} for
+vg&index 0 ge {
+  vg&string vg&index 2 add dup vg&string length exch sub getinterval
+  vg&index 2 gt {vg&string 2 vg&index 2 sub getinterval}{()} ifelse
+  true}
+{false} ifelse
+} bind def
+
+% Recursively show an unicode string.
+% <string> recshow --
+/recshow {
+  popfirst
+  {
+    % Test to see if this is a string attribute.
+    vg&fbyte 16#f0 and 16#e0 eq
+    {
+      q
+
+      % Font style.
+      currentfont dup /FontStyleBits known {/FontStyleBits get}{pop 0} ifelse
+      vg&cbyte or vg&fontstyles exch get fontsize exch exec
+
+      vg&token pop recshow currentpoint Q m recshow
+    }
+    {
+      vg&fbyte 16#F8 and 16#F0 eq {
+
+        % Superscript and/or subscript.
+        vg&cbyte 16#00 eq {
+          vg&token pop exch vg&token pop 3 -1 roll
+          q raise recshow unraise currentpoint pop Q exch
+          q lower recshow unlower currentpoint pop Q
+          maxval currentpoint exch pop m recshow } if
+
+        % Strikeout.
+        vg&cbyte 16#01 eq {
+          vg&token pop currentpoint 3 -1 roll recshow
+          q 0 J vg&underline vg&uthick w
+          currentpoint 4 -2 roll fontsize 3 div add moveto
+          fontsize 3 div add lineto internalstroke Q
+          recshow} if
+
+        % Underline.
+        vg&cbyte 16#02 eq {
+          vg&token pop currentpoint 3 -1 roll recshow
+          q 0 J vg&underline vg&uthick w
+          currentpoint 4 -2 roll vg&uoffset add moveto
+          vg&uoffset add lineto internalstroke Q
+          recshow} if
+
+        % Dashed underline.
+        vg&cbyte 16#03 eq {
+          vg&token pop currentpoint 3 -1 roll recshow
+          q 0 J [ vg&uthick 5 mul vg&uthick 2 mul] 0 d
+          vg&underline vg&uthick w
+          currentpoint 4 -2 roll vg&uoffset add moveto
+          vg&uoffset add lineto internalstroke Q
+          recshow} if
+
+        % Dotted underline.
+        vg&cbyte 16#04 eq {
+          vg&token pop currentpoint 3 -1 roll recshow
+          q 1 J [ 0 vg&uthick 3 mul] 0 d
+          vg&underline vg&uthick w
+          currentpoint 4 -2 roll vg&uoffset add moveto
+          vg&uoffset add lineto internalstroke Q
+          recshow} if
+
+        % Thick underline.
+        vg&cbyte 16#05 eq {
+          vg&token pop currentpoint 3 -1 roll recshow
+          q 0 J vg&underline vg&uthick 2 mul w
+          currentpoint 4 -2 roll vg&uoffset vg&uthick 2 div sub add moveto
+          vg&uoffset vg&uthick 2 div sub add lineto internalstroke Q
+          recshow} if
+
+        % Gray thick underline.
+        vg&cbyte 16#06 eq {
+          vg&token pop currentpoint 3 -1 roll recshow
+          q 0 J vg&underline vg&uthick 2 mul w 0.5 setgray
+          currentpoint 4 -2 roll vg&uoffset vg&uthick 2 div sub add moveto
+          vg&uoffset vg&uthick 2 div sub add lineto internalstroke Q
+          recshow} if
+
+        % Overbar.
+        vg&cbyte 16#07 eq {
+          vg&token pop dup stringsize relative 4 1 roll pop pop exch
+          3 -1 roll recshow
+          q 0 J vg&underline vg&uthick w
+          vg&uoffset neg add dup currentpoint pop exch m l internalstroke Q
+          recshow} if
+      }
+      {
+        vg&fbyte vg&cbyte unicharshow recshow
+      } ifelse
+    } ifelse
+  } if
+} def
+
+% Get the underline position and thickness from the current font.
+/vg&underline {
+
+currentfont dup /FontType get 0 eq {/FDepVector get 0 get} if
+dup dup /FontInfo known {
+  /FontInfo get dup
+  dup /UnderlinePosition known {
+    /UnderlinePosition get /vg&uoffset exch def
+  }
+  {
+    pop /vg&uoffset 0 def
+  } ifelse
+  dup /UnderlineThickness known {
+    /UnderlineThickness get /vg&uthick exch def
+  }
+  {
+    pop /vg&uthick 0 def
+  } ifelse
+}
+{
+  pop /vg&uoffset 0 def /vg&uthick 0 def
+} ifelse
+/FontMatrix get
+currentfont dup /FontType get 0 eq
+{/FontMatrix get matrix concatmatrix}{pop} ifelse
+dup 0 vg&uoffset 3 -1 roll transform /vg&uoffset exch def pop
+0 vg&uthick 3 -1 roll transform /vg&uthick exch def pop
+} def
+
+% Make a frame with the coordinates on the stack.
+% <llx> <lly> <urx> <ury> frame --
+/frame {4 copy m 3 1 roll exch l 4 -2 roll l l h} def
+
+% Resets the accumulated bounding box to a degenerate box at the
+% current point.
+% -- resetbbox --
+/resetbbox {
+  currentpoint 2 copy
+  /bbury exch def
+  /bburx exch def
+  /bblly exch def
+  /bbllx exch def
+} def
+
+% Update the accumulated bounding box.
+% <llx'> <lly'> <urx'> <ury'> updatebbox --
+/updatebbox {
+  dup bbury gt {/bbury exch def} {pop} ifelse
+  dup bburx gt {/bburx exch def} {pop} ifelse
+  dup bblly lt {/bblly exch def} {pop} ifelse
+  dup bbllx lt {/bbllx exch def} {pop} ifelse
+} def
+
+% Set the bounding box to the values on the stack.
+% <llx'> <lly'> <urx'> <ury'> updatebbox --
+/restorebbox {
+  /bbury exch def /bburx exch def /bblly exch def /bbllx exch def
+} def
+
+% Push the accumulated bounding box onto the stack.
+% -- pushbbox <llx> <lly> <urx> <ury>
+/pushbbox {bbllx bblly bburx bbury} def
+
+% Make the relative bounding box relative to the currentpoint.
+% <llx'> <lly'> <urx'> <ury'> inflate <llx> <lly> <urx> <ury>
+/inflate {
+  2 {fontsize 0.2 mul add 4 1 roll} repeat
+  2 {fontsize 0.2 mul sub 4 1 roll} repeat
+} def
+
+% Make the relative bounding box relative to the currentpoint.
+% <llx'> <lly'> <urx'> <ury'> relative <llx> <lly> <urx> <ury>
+/relative {
+  currentpoint 3 -1 roll add 3 1 roll add exch 4 2 roll
+  currentpoint 3 -1 roll add 3 1 roll add exch 4 2 roll
+} def
+
+% Returns the size of a string appropriate for recshow.
+% <string> stringsize <llx> <lly> <urx> <ury>
+/stringsize {
+  pushbbox /internalshow load /internalstroke load 7 -1 roll
+  q
+  nulldevice 0 0 m
+  nullinternalshow nullinternalstroke
+  resetbbox
+  recshow
+  /internalstroke exch def /internalshow exch def
+  pushbbox 8 -4 roll restorebbox
+  Q
+} def
+
+% Calculate values for string positioning.
+/calcval {4 copy
+  3 -1 roll sub /widy exch def sub neg /widx exch def
+  pop pop /dy exch def /dx exch def} def
+
+% Utilities to position a string.
+% First letter (U=upper, C=center, B=baseline, L=lower)
+% Second letter (L=left, C=center, R=right)
+/align [
+{calcval dx neg widy dy add neg rmoveto} % UL
+{calcval dx neg widy 2 div dy add neg rmoveto} % CL
+{calcval dx neg 0 rmoveto} % BL
+{calcval dx neg dy neg rmoveto} % LL
+{calcval widx dx add neg widy dy add neg rmoveto} % UR
+{calcval widx dx add neg widy 2 div dy add neg rmoveto} % CR
+{calcval widx dx add neg 0 rmoveto} % BR
+{calcval widx dx add neg dy neg rmoveto} % LR
+{calcval widx 2 div dx add neg widy dy add neg rmoveto} % UC
+{calcval widx 2 div dx add neg widy 2 div dy add neg rmoveto} % CC
+{calcval widx 2 div dx add neg 0 rmoveto} % BC
+{calcval widx 2 div dx add neg dy neg rmoveto} % LC
+] def
+
+/vg&str {m q 1 -1 scale dup stringsize 4 copy align 11 -1 roll get exec
+         q inflate relative frame exch exec Q recshow Q} def
+
+end /procDict exch def
+%%EndProlog
+
+%%BeginSetup
+save
+procDict begin
+printColorMap begin
+595 791 setpagesize
+20 20 20 20 setmargins
+0 0 setorigin
+400 400 setsize
+fittopage
+portrait
+imagescale
+cliptobounds
+setbasematrix
+/Helvetica 10 sf
+defaultGraphicsState
+%%EndSetup
+
+0 0 0 RG
+[ 1.00000 0 0 1.00000 0 0 ] defaultmatrix matrix concatmatrix setmatrix
+cliprestore
+1.00000 1.00000 1.00000 RG
+newpath
+0 0 m
+400.000 0 l
+400.000 400.000 l
+0 400.000 l
+0 0 l
+h
+f
+0 0 0 RG
+1.50000 w
+0 J
+1 j
+[ 1.00000 0 0 1.00000 0 0 ] concat
+[ 1.00000 0 0 1.00000 0 0 ] concat
+q
+[ 1.00000 0 0 1.00000 5.00000 5.00000 ] concat
+0 0 390 390 rc
+1.00000 w
+2 J
+0 j
+0 J
+1 j
+q
+Q
+2 J
+0 j
+0 J
+1 j
+q
+Q
+2 J
+0 j
+1.50000 w
+0 J
+1 j
+q
+q
+0.243137 0.341176 0.541176 RG
+18.4033 0 371.596 366.407 rc
+newpath
+31.9617 182.857 m
+375.441 182.857 l
+31.9617 182.857 l
+31.9617 182.857 l
+31.9617 182.857 l
+h
+f
+newpath
+31.9617 116.816 m
+375.441 116.816 l
+31.9617 116.816 l
+31.9617 116.816 l
+31.9617 116.816 l
+h
+f
+cliprestore
+newpath
+0 0 m
+0 390.000 l
+390.000 390.000 l
+390.000 0 l
+h
+W
+Q
+q
+3.00000 w
+[ 15.0000 7.50000 3.00000 7.50000 ] 0 d
+15.4033 -3.00000 377.596 372.407 rc
+newpath
+31.9617 183.703 m
+375.441 183.703 l
+S
+cliprestore
+newpath
+0 0 m
+0 390.000 l
+390.000 390.000 l
+390.000 0 l
+h
+W
+Q
+q
+3.00000 w
+[ 15.0000 7.50000 3.00000 7.50000 ] 0 d
+15.4033 -3.00000 377.596 372.407 rc
+newpath
+31.9617 115.969 m
+375.441 115.969 l
+S
+cliprestore
+newpath
+0 0 m
+0 390.000 l
+390.000 390.000 l
+390.000 0 l
+h
+W
+Q
+q
+1.00000 w
+0.501961 0.501961 0.501961 RG
+18.4033 0 371.596 366.407 rc
+newpath
+368.672 9.91922 m
+382.210 18.8179 l
+379.053 14.3329 l
+S
+newpath
+368.309 28.3360 m
+382.574 36.0506 l
+379.037 31.8507 l
+S
+newpath
+350.594 9.91922 m
+364.132 18.8179 l
+360.975 14.3329 l
+S
+newpath
+350.231 28.3360 m
+364.496 36.0506 l
+360.959 31.8507 l
+S
+newpath
+367.739 65.2621 m
+383.144 70.4234 l
+378.922 66.8911 l
+S
+newpath
+367.548 83.7272 m
+383.335 87.6078 l
+378.830 84.4339 l
+S
+newpath
+349.470 83.7272 m
+365.257 87.6078 l
+360.752 84.4339 l
+S
+newpath
+349.661 65.2621 m
+365.066 70.4234 l
+360.844 66.8911 l
+S
+newpath
+296.361 9.91922 m
+309.898 18.8179 l
+306.742 14.3329 l
+S
+newpath
+295.997 28.3360 m
+310.262 36.0506 l
+306.725 31.8507 l
+S
+newpath
+314.075 28.3360 m
+328.340 36.0506 l
+324.803 31.8507 l
+S
+newpath
+314.439 9.91922 m
+327.976 18.8179 l
+324.820 14.3329 l
+S
+newpath
+295.427 65.2621 m
+310.832 70.4234 l
+306.611 66.8911 l
+S
+newpath
+295.236 83.7272 m
+311.023 87.6078 l
+306.518 84.4339 l
+S
+newpath
+313.314 83.7272 m
+329.101 87.6078 l
+324.596 84.4339 l
+S
+newpath
+313.505 65.2621 m
+328.910 70.4234 l
+324.689 66.8911 l
+S
+newpath
+295.682 46.7905 m
+310.577 53.2455 l
+306.681 49.3667 l
+S
+newpath
+313.760 46.7905 m
+328.655 53.2455 l
+324.759 49.3667 l
+S
+newpath
+331.392 83.7272 m
+347.179 87.6078 l
+342.674 84.4339 l
+S
+newpath
+331.583 65.2621 m
+346.988 70.4234 l
+342.766 66.8911 l
+S
+newpath
+331.838 46.7905 m
+346.733 53.2455 l
+342.837 49.3667 l
+S
+newpath
+332.153 28.3360 m
+346.418 36.0506 l
+342.881 31.8507 l
+S
+newpath
+332.517 9.91922 m
+346.054 18.8179 l
+342.898 14.3329 l
+S
+newpath
+349.916 46.7905 m
+364.811 53.2455 l
+360.915 49.3667 l
+S
+newpath
+367.994 46.7905 m
+382.889 53.2455 l
+378.993 49.3667 l
+S
+newpath
+367.419 102.163 m
+383.464 104.821 l
+378.722 102.002 l
+S
+newpath
+367.311 138.875 m
+383.572 139.408 l
+378.493 137.235 l
+S
+newpath
+349.233 138.875 m
+365.494 139.408 l
+360.415 137.235 l
+S
+newpath
+349.265 120.550 m
+365.461 122.083 l
+360.529 119.602 l
+S
+newpath
+349.341 102.163 m
+365.386 104.821 l
+360.644 102.002 l
+S
+newpath
+367.343 120.550 m
+383.539 122.083 l
+378.607 119.602 l
+S
+newpath
+367.308 157.129 m
+383.575 156.803 l
+378.385 154.901 l
+S
+newpath
+367.346 193.412 m
+383.536 191.820 l
+378.210 190.328 l
+S
+newpath
+367.323 175.308 m
+383.559 174.273 l
+378.289 172.600 l
+S
+newpath
+349.268 193.412 m
+365.458 191.820 l
+360.132 190.328 l
+S
+newpath
+349.245 175.308 m
+365.481 174.273 l
+360.211 172.600 l
+S
+newpath
+349.230 157.129 m
+365.497 156.803 l
+360.307 154.901 l
+S
+newpath
+295.107 102.163 m
+311.152 104.821 l
+306.411 102.002 l
+S
+newpath
+294.999 138.875 m
+311.260 139.408 l
+306.181 137.235 l
+S
+newpath
+295.032 120.550 m
+311.227 122.083 l
+306.296 119.602 l
+S
+newpath
+313.077 138.875 m
+329.338 139.408 l
+324.259 137.235 l
+S
+newpath
+313.110 120.550 m
+329.305 122.083 l
+324.374 119.602 l
+S
+newpath
+313.185 102.163 m
+329.230 104.821 l
+324.489 102.002 l
+S
+newpath
+294.996 157.129 m
+311.263 156.803 l
+306.073 154.901 l
+S
+newpath
+295.035 193.412 m
+311.224 191.820 l
+305.899 190.328 l
+S
+newpath
+295.012 175.308 m
+311.248 174.273 l
+305.978 172.600 l
+S
+newpath
+313.113 193.412 m
+329.302 191.820 l
+323.976 190.328 l
+S
+newpath
+313.089 175.308 m
+329.326 174.273 l
+324.056 172.600 l
+S
+newpath
+313.074 157.129 m
+329.341 156.803 l
+324.151 154.901 l
+S
+newpath
+331.190 193.412 m
+347.380 191.820 l
+342.054 190.328 l
+S
+newpath
+331.167 175.308 m
+347.403 174.273 l
+342.133 172.600 l
+S
+newpath
+331.152 157.129 m
+347.419 156.803 l
+342.229 154.901 l
+S
+newpath
+331.155 138.875 m
+347.416 139.408 l
+342.337 137.235 l
+S
+newpath
+331.188 120.550 m
+347.383 122.083 l
+342.452 119.602 l
+S
+newpath
+331.263 102.163 m
+347.308 104.821 l
+342.567 102.002 l
+S
+newpath
+259.841 28.3360 m
+274.106 36.0506 l
+270.569 31.8507 l
+S
+newpath
+260.205 9.91922 m
+273.743 18.8179 l
+270.586 14.3329 l
+S
+newpath
+259.080 83.7272 m
+274.867 87.6078 l
+270.363 84.4339 l
+S
+newpath
+259.271 65.2621 m
+274.676 70.4234 l
+270.455 66.8911 l
+S
+newpath
+224.049 9.91922 m
+237.587 18.8179 l
+234.430 14.3329 l
+S
+newpath
+223.685 28.3360 m
+237.951 36.0506 l
+234.414 31.8507 l
+S
+newpath
+205.608 28.3360 m
+219.873 36.0506 l
+216.336 31.8507 l
+S
+newpath
+205.971 9.91922 m
+219.509 18.8179 l
+216.352 14.3329 l
+S
+newpath
+223.116 65.2621 m
+238.521 70.4234 l
+234.299 66.8911 l
+S
+newpath
+222.925 83.7272 m
+238.711 87.6078 l
+234.207 84.4339 l
+S
+newpath
+204.847 83.7272 m
+220.634 87.6078 l
+216.129 84.4339 l
+S
+newpath
+205.038 65.2621 m
+220.443 70.4234 l
+216.221 66.8911 l
+S
+newpath
+205.293 46.7905 m
+220.188 53.2455 l
+216.292 49.3667 l
+S
+newpath
+223.371 46.7905 m
+238.265 53.2455 l
+234.369 49.3667 l
+S
+newpath
+241.002 83.7272 m
+256.789 87.6078 l
+252.285 84.4339 l
+S
+newpath
+241.193 65.2621 m
+256.598 70.4234 l
+252.377 66.8911 l
+S
+newpath
+241.448 46.7905 m
+256.343 53.2455 l
+252.447 49.3667 l
+S
+newpath
+241.763 28.3360 m
+256.029 36.0506 l
+252.492 31.8507 l
+S
+newpath
+242.127 9.91922 m
+255.665 18.8179 l
+252.508 14.3329 l
+S
+newpath
+259.526 46.7905 m
+274.421 53.2455 l
+270.525 49.3667 l
+S
+newpath
+258.843 138.875 m
+275.104 139.408 l
+270.025 137.235 l
+S
+newpath
+258.876 120.550 m
+275.072 122.083 l
+270.140 119.602 l
+S
+newpath
+258.951 102.163 m
+274.996 104.821 l
+270.255 102.002 l
+S
+newpath
+258.879 193.412 m
+275.069 191.820 l
+269.743 190.328 l
+S
+newpath
+258.856 175.308 m
+275.092 174.273 l
+269.822 172.600 l
+S
+newpath
+258.840 157.129 m
+275.107 156.803 l
+269.917 154.901 l
+S
+newpath
+222.796 102.163 m
+238.841 104.821 l
+234.099 102.002 l
+S
+newpath
+222.687 138.875 m
+238.949 139.408 l
+233.869 137.235 l
+S
+newpath
+204.610 138.875 m
+220.871 139.408 l
+215.792 137.235 l
+S
+newpath
+204.642 120.550 m
+220.838 122.083 l
+215.906 119.602 l
+S
+newpath
+204.718 102.163 m
+220.763 104.821 l
+216.021 102.002 l
+S
+newpath
+222.720 120.550 m
+238.916 122.083 l
+233.984 119.602 l
+S
+newpath
+222.685 157.129 m
+238.951 156.803 l
+233.762 154.901 l
+S
+newpath
+222.723 193.412 m
+238.913 191.820 l
+233.587 190.328 l
+S
+newpath
+222.700 175.308 m
+238.936 174.273 l
+233.666 172.600 l
+S
+newpath
+204.645 193.412 m
+220.835 191.820 l
+215.509 190.328 l
+S
+newpath
+204.622 175.308 m
+220.858 174.273 l
+215.588 172.600 l
+S
+newpath
+204.607 157.129 m
+220.874 156.803 l
+215.684 154.901 l
+S
+newpath
+240.801 193.412 m
+256.991 191.820 l
+251.665 190.328 l
+S
+newpath
+240.778 175.308 m
+257.014 174.273 l
+251.744 172.600 l
+S
+newpath
+240.763 157.129 m
+257.029 156.803 l
+251.839 154.901 l
+S
+newpath
+240.765 138.875 m
+257.026 139.408 l
+251.947 137.235 l
+S
+newpath
+240.798 120.550 m
+256.994 122.083 l
+252.062 119.602 l
+S
+newpath
+240.873 102.163 m
+256.918 104.821 l
+252.177 102.002 l
+S
+newpath
+276.957 193.412 m
+293.147 191.820 l
+287.821 190.328 l
+S
+newpath
+276.934 175.308 m
+293.170 174.273 l
+287.900 172.600 l
+S
+newpath
+276.918 157.129 m
+293.185 156.803 l
+287.995 154.901 l
+S
+newpath
+276.921 138.875 m
+293.182 139.408 l
+288.103 137.235 l
+S
+newpath
+276.954 120.550 m
+293.150 122.083 l
+288.218 119.602 l
+S
+newpath
+277.029 102.163 m
+293.074 104.821 l
+288.333 102.002 l
+S
+newpath
+277.158 83.7272 m
+292.945 87.6078 l
+288.440 84.4339 l
+S
+newpath
+277.349 65.2621 m
+292.754 70.4234 l
+288.533 66.8911 l
+S
+newpath
+277.604 46.7905 m
+292.499 53.2455 l
+288.603 49.3667 l
+S
+newpath
+277.919 28.3360 m
+292.184 36.0506 l
+288.647 31.8507 l
+S
+newpath
+278.283 9.91922 m
+291.820 18.8179 l
+288.664 14.3329 l
+S
+newpath
+367.369 211.440 m
+383.513 209.441 l
+378.150 208.084 l
+S
+newpath
+367.387 229.394 m
+383.495 227.136 l
+378.111 225.865 l
+S
+newpath
+349.309 229.394 m
+365.417 227.136 l
+360.033 225.865 l
+S
+newpath
+349.292 211.440 m
+365.435 209.441 l
+360.072 208.084 l
+S
+newpath
+367.393 265.087 m
+383.489 262.742 l
+378.097 261.501 l
+S
+newpath
+367.381 282.825 m
+383.501 280.653 l
+378.124 279.354 l
+S
+newpath
+349.303 282.825 m
+365.423 280.653 l
+360.046 279.354 l
+S
+newpath
+349.316 265.087 m
+365.411 262.742 l
+360.019 261.501 l
+S
+newpath
+295.058 211.440 m
+311.201 209.441 l
+305.838 208.084 l
+S
+newpath
+295.076 229.394 m
+311.184 227.136 l
+305.799 225.865 l
+S
+newpath
+313.153 229.394 m
+329.262 227.136 l
+323.877 225.865 l
+S
+newpath
+313.136 211.440 m
+329.279 209.441 l
+323.916 208.084 l
+S
+newpath
+295.082 265.087 m
+311.177 262.742 l
+305.786 261.501 l
+S
+newpath
+295.069 282.825 m
+311.190 280.653 l
+305.812 279.354 l
+S
+newpath
+313.147 282.825 m
+329.268 280.653 l
+323.890 279.354 l
+S
+newpath
+313.160 265.087 m
+329.255 262.742 l
+323.864 261.501 l
+S
+newpath
+295.084 247.276 m
+311.175 244.903 l
+305.781 243.671 l
+S
+newpath
+313.162 247.276 m
+329.253 244.903 l
+323.859 243.671 l
+S
+newpath
+331.225 282.825 m
+347.345 280.653 l
+341.968 279.354 l
+S
+newpath
+331.238 265.087 m
+347.333 262.742 l
+341.942 261.501 l
+S
+newpath
+331.240 247.276 m
+347.331 244.903 l
+341.937 243.671 l
+S
+newpath
+331.231 229.394 m
+347.339 227.136 l
+341.955 225.865 l
+S
+newpath
+331.214 211.440 m
+347.357 209.441 l
+341.994 208.084 l
+S
+newpath
+349.318 247.276 m
+365.409 244.903 l
+360.015 243.671 l
+S
+newpath
+367.396 247.276 m
+383.487 244.903 l
+378.093 243.671 l
+S
+newpath
+367.361 300.491 m
+383.522 298.637 l
+378.172 297.232 l
+S
+newpath
+367.315 335.598 m
+383.567 334.829 l
+378.326 333.069 l
+S
+newpath
+349.238 335.598 m
+365.489 334.829 l
+360.248 333.069 l
+S
+newpath
+349.259 318.082 m
+365.468 316.695 l
+360.162 315.136 l
+S
+newpath
+349.283 300.491 m
+365.444 298.637 l
+360.094 297.232 l
+S
+newpath
+367.337 318.082 m
+383.546 316.695 l
+378.240 315.136 l
+S
+newpath
+367.306 353.038 m
+383.576 353.038 l
+378.427 351.033 l
+S
+newpath
+349.228 353.038 m
+365.498 353.038 l
+360.349 351.033 l
+S
+newpath
+295.049 300.491 m
+311.210 298.637 l
+305.860 297.232 l
+S
+newpath
+295.004 335.598 m
+311.255 334.829 l
+306.014 333.069 l
+S
+newpath
+295.025 318.082 m
+311.234 316.695 l
+305.928 315.136 l
+S
+newpath
+313.082 335.598 m
+329.333 334.829 l
+324.092 333.069 l
+S
+newpath
+313.103 318.082 m
+329.312 316.695 l
+324.006 315.136 l
+S
+newpath
+313.127 300.491 m
+329.288 298.637 l
+323.938 297.232 l
+S
+newpath
+294.995 353.038 m
+311.265 353.038 l
+306.115 351.033 l
+S
+newpath
+313.072 353.038 m
+329.343 353.038 l
+324.193 351.033 l
+S
+newpath
+331.150 353.038 m
+347.420 353.038 l
+342.271 351.033 l
+S
+newpath
+331.160 335.598 m
+347.411 334.829 l
+342.170 333.069 l
+S
+newpath
+331.181 318.082 m
+347.390 316.695 l
+342.084 315.136 l
+S
+newpath
+331.205 300.491 m
+347.366 298.637 l
+342.016 297.232 l
+S
+newpath
+258.920 229.394 m
+275.028 227.136 l
+269.643 225.865 l
+S
+newpath
+258.902 211.440 m
+275.045 209.441 l
+269.683 208.084 l
+S
+newpath
+258.914 282.825 m
+275.034 280.653 l
+269.656 279.354 l
+S
+newpath
+258.926 265.087 m
+275.022 262.742 l
+269.630 261.501 l
+S
+newpath
+222.746 211.440 m
+238.890 209.441 l
+233.527 208.084 l
+S
+newpath
+222.764 229.394 m
+238.872 227.136 l
+233.487 225.865 l
+S
+newpath
+204.686 229.394 m
+220.794 227.136 l
+215.410 225.865 l
+S
+newpath
+204.669 211.440 m
+220.812 209.441 l
+215.449 208.084 l
+S
+newpath
+222.770 265.087 m
+238.866 262.742 l
+233.474 261.501 l
+S
+newpath
+222.758 282.825 m
+238.878 280.653 l
+233.501 279.354 l
+S
+newpath
+204.680 282.825 m
+220.800 280.653 l
+215.423 279.354 l
+S
+newpath
+204.692 265.087 m
+220.788 262.742 l
+215.396 261.501 l
+S
+newpath
+204.695 247.276 m
+220.786 244.903 l
+215.392 243.671 l
+S
+newpath
+222.773 247.276 m
+238.864 244.903 l
+233.470 243.671 l
+S
+newpath
+240.836 282.825 m
+256.956 280.653 l
+251.579 279.354 l
+S
+newpath
+240.848 265.087 m
+256.944 262.742 l
+251.552 261.501 l
+S
+newpath
+240.850 247.276 m
+256.941 244.903 l
+251.548 243.671 l
+S
+newpath
+240.842 229.394 m
+256.950 227.136 l
+251.565 225.865 l
+S
+newpath
+240.824 211.440 m
+256.968 209.441 l
+251.605 208.084 l
+S
+newpath
+258.928 247.276 m
+275.019 244.903 l
+269.626 243.671 l
+S
+newpath
+258.848 335.598 m
+275.100 334.829 l
+269.858 333.069 l
+S
+newpath
+258.869 318.082 m
+275.078 316.695 l
+269.772 315.136 l
+S
+newpath
+258.893 300.491 m
+275.054 298.637 l
+269.704 297.232 l
+S
+newpath
+258.839 353.038 m
+275.109 353.038 l
+269.959 351.033 l
+S
+newpath
+222.737 300.491 m
+238.899 298.637 l
+233.548 297.232 l
+S
+newpath
+222.692 335.598 m
+238.944 334.829 l
+233.703 333.069 l
+S
+newpath
+204.614 335.598 m
+220.866 334.829 l
+215.625 333.069 l
+S
+newpath
+204.636 318.082 m
+220.845 316.695 l
+215.539 315.136 l
+S
+newpath
+204.660 300.491 m
+220.821 298.637 l
+215.471 297.232 l
+S
+newpath
+222.713 318.082 m
+238.923 316.695 l
+233.616 315.136 l
+S
+newpath
+222.683 353.038 m
+238.953 353.038 l
+233.804 351.033 l
+S
+newpath
+204.605 353.038 m
+220.875 353.038 l
+215.726 351.033 l
+S
+newpath
+240.761 353.038 m
+257.031 353.038 l
+251.881 351.033 l
+S
+newpath
+240.770 335.598 m
+257.022 334.829 l
+251.780 333.069 l
+S
+newpath
+240.791 318.082 m
+257.001 316.695 l
+251.694 315.136 l
+S
+newpath
+240.815 300.491 m
+256.976 298.637 l
+251.626 297.232 l
+S
+newpath
+276.917 353.038 m
+293.187 353.038 l
+288.037 351.033 l
+S
+newpath
+276.926 335.598 m
+293.177 334.829 l
+287.936 333.069 l
+S
+newpath
+276.947 318.082 m
+293.156 316.695 l
+287.850 315.136 l
+S
+newpath
+276.971 300.491 m
+293.132 298.637 l
+287.782 297.232 l
+S
+newpath
+276.992 282.825 m
+293.112 280.653 l
+287.734 279.354 l
+S
+newpath
+277.004 265.087 m
+293.099 262.742 l
+287.708 261.501 l
+S
+newpath
+277.006 247.276 m
+293.097 244.903 l
+287.703 243.671 l
+S
+newpath
+276.998 229.394 m
+293.106 227.136 l
+287.721 225.865 l
+S
+newpath
+276.980 211.440 m
+293.123 209.441 l
+287.761 208.084 l
+S
+newpath
+151.738 9.91922 m
+165.275 18.8179 l
+162.119 14.3329 l
+S
+newpath
+151.374 28.3360 m
+165.639 36.0506 l
+162.102 31.8507 l
+S
+newpath
+169.452 28.3360 m
+183.717 36.0506 l
+180.180 31.8507 l
+S
+newpath
+169.816 9.91922 m
+183.353 18.8179 l
+180.197 14.3329 l
+S
+newpath
+150.804 65.2621 m
+166.209 70.4234 l
+161.988 66.8911 l
+S
+newpath
+150.613 83.7272 m
+166.400 87.6078 l
+161.895 84.4339 l
+S
+newpath
+168.691 83.7272 m
+184.478 87.6078 l
+179.973 84.4339 l
+S
+newpath
+168.882 65.2621 m
+184.287 70.4234 l
+180.065 66.8911 l
+S
+newpath
+97.5045 9.91922 m
+111.042 18.8179 l
+107.885 14.3329 l
+S
+newpath
+115.218 28.3360 m
+129.483 36.0506 l
+125.946 31.8507 l
+S
+newpath
+115.582 9.91922 m
+129.120 18.8179 l
+125.963 14.3329 l
+S
+newpath
+114.457 83.7272 m
+130.244 87.6078 l
+125.740 84.4339 l
+S
+newpath
+114.648 65.2621 m
+130.053 70.4234 l
+125.832 66.8911 l
+S
+newpath
+114.903 46.7905 m
+129.798 53.2455 l
+125.902 49.3667 l
+S
+newpath
+132.535 83.7272 m
+148.322 87.6078 l
+143.817 84.4339 l
+S
+newpath
+132.726 65.2621 m
+148.131 70.4234 l
+143.910 66.8911 l
+S
+newpath
+132.981 46.7905 m
+147.876 53.2455 l
+143.980 49.3667 l
+S
+newpath
+133.296 28.3360 m
+147.561 36.0506 l
+144.024 31.8507 l
+S
+newpath
+133.660 9.91922 m
+147.197 18.8179 l
+144.041 14.3329 l
+S
+newpath
+151.059 46.7905 m
+165.954 53.2455 l
+162.058 49.3667 l
+S
+newpath
+169.137 46.7905 m
+184.032 53.2455 l
+180.136 49.3667 l
+S
+newpath
+150.484 102.163 m
+166.529 104.821 l
+161.788 102.002 l
+S
+newpath
+150.376 138.875 m
+166.637 139.408 l
+161.558 137.235 l
+S
+newpath
+150.409 120.550 m
+166.604 122.083 l
+161.673 119.602 l
+S
+newpath
+168.454 138.875 m
+184.715 139.408 l
+179.636 137.235 l
+S
+newpath
+168.487 120.550 m
+184.682 122.083 l
+179.751 119.602 l
+S
+newpath
+168.562 102.163 m
+184.607 104.821 l
+179.866 102.002 l
+S
+newpath
+150.373 157.129 m
+166.640 156.803 l
+161.450 154.901 l
+S
+newpath
+150.412 193.412 m
+166.601 191.820 l
+161.275 190.328 l
+S
+newpath
+150.388 175.308 m
+166.625 174.273 l
+161.355 172.600 l
+S
+newpath
+168.489 193.412 m
+184.679 191.820 l
+179.353 190.328 l
+S
+newpath
+168.466 175.308 m
+184.703 174.273 l
+179.432 172.600 l
+S
+newpath
+168.451 157.129 m
+184.718 156.803 l
+179.528 154.901 l
+S
+newpath
+114.220 138.875 m
+130.481 139.408 l
+125.402 137.235 l
+S
+newpath
+114.253 120.550 m
+130.449 122.083 l
+125.517 119.602 l
+S
+newpath
+114.328 102.163 m
+130.373 104.821 l
+125.632 102.002 l
+S
+newpath
+114.256 193.412 m
+130.446 191.820 l
+125.120 190.328 l
+S
+newpath
+114.233 175.308 m
+130.469 174.273 l
+125.199 172.600 l
+S
+newpath
+114.217 157.129 m
+130.484 156.803 l
+125.294 154.901 l
+S
+newpath
+132.334 193.412 m
+148.524 191.820 l
+143.198 190.328 l
+S
+newpath
+132.311 175.308 m
+148.547 174.273 l
+143.277 172.600 l
+S
+newpath
+132.295 157.129 m
+148.562 156.803 l
+143.372 154.901 l
+S
+newpath
+132.298 138.875 m
+148.559 139.408 l
+143.480 137.235 l
+S
+newpath
+132.331 120.550 m
+148.526 122.083 l
+143.595 119.602 l
+S
+newpath
+132.406 102.163 m
+148.451 104.821 l
+143.710 102.002 l
+S
+newpath
+79.4266 9.91922 m
+92.9642 18.8179 l
+89.8076 14.3329 l
+S
+newpath
+79.0627 28.3360 m
+93.3280 36.0506 l
+89.7910 31.8507 l
+S
+newpath
+60.9849 28.3360 m
+75.2501 36.0506 l
+71.7131 31.8507 l
+S
+newpath
+61.3487 9.91922 m
+74.8863 18.8179 l
+71.7297 14.3329 l
+S
+newpath
+78.4929 65.2621 m
+93.8979 70.4234 l
+89.6764 66.8911 l
+S
+newpath
+78.3019 83.7272 m
+94.0888 87.6078 l
+89.5842 84.4339 l
+S
+newpath
+60.2241 83.7272 m
+76.0109 87.6078 l
+71.5063 84.4339 l
+S
+newpath
+60.4150 65.2621 m
+75.8200 70.4234 l
+71.5986 66.8911 l
+S
+newpath
+25.1930 9.91922 m
+38.7305 18.8179 l
+35.5739 14.3329 l
+S
+newpath
+24.8291 28.3360 m
+39.0944 36.0506 l
+35.5574 31.8507 l
+S
+newpath
+24.0683 83.7272 m
+39.8552 87.6078 l
+35.3505 84.4339 l
+S
+newpath
+24.2592 65.2621 m
+39.6643 70.4234 l
+35.4428 66.8911 l
+S
+newpath
+24.5143 46.7905 m
+39.4092 53.2455 l
+35.5132 49.3667 l
+S
+newpath
+42.1462 83.7272 m
+57.9331 87.6078 l
+53.4284 84.4339 l
+S
+newpath
+42.3371 65.2621 m
+57.7421 70.4234 l
+53.5207 66.8911 l
+S
+newpath
+42.5922 46.7905 m
+57.4871 53.2455 l
+53.5911 49.3667 l
+S
+newpath
+42.9070 28.3360 m
+57.1723 36.0506 l
+53.6352 31.8507 l
+S
+newpath
+43.2709 9.91922 m
+56.8084 18.8179 l
+53.6518 14.3329 l
+S
+newpath
+60.6701 46.7905 m
+75.5650 53.2455 l
+71.6689 49.3667 l
+S
+newpath
+78.7479 46.7905 m
+93.6428 53.2455 l
+89.7468 49.3667 l
+S
+newpath
+78.1728 102.163 m
+94.2179 104.821 l
+89.4766 102.002 l
+S
+newpath
+78.0648 138.875 m
+94.3259 139.408 l
+89.2468 137.235 l
+S
+newpath
+59.9870 138.875 m
+76.2481 139.408 l
+71.1689 137.235 l
+S
+newpath
+60.0197 120.550 m
+76.2153 122.083 l
+71.2837 119.602 l
+S
+newpath
+60.0950 102.163 m
+76.1401 104.821 l
+71.3987 102.002 l
+S
+newpath
+78.0976 120.550 m
+94.2932 122.083 l
+89.3616 119.602 l
+S
+newpath
+78.0620 157.129 m
+94.3288 156.803 l
+89.1389 154.901 l
+S
+newpath
+78.1005 193.412 m
+94.2903 191.820 l
+88.9643 190.328 l
+S
+newpath
+78.0773 175.308 m
+94.3135 174.273 l
+89.0434 172.600 l
+S
+newpath
+60.0226 193.412 m
+76.2124 191.820 l
+70.8864 190.328 l
+S
+newpath
+59.9994 175.308 m
+76.2356 174.273 l
+70.9656 172.600 l
+S
+newpath
+59.9841 157.129 m
+76.2509 156.803 l
+71.0610 154.901 l
+S
+newpath
+23.8312 138.875 m
+40.0923 139.408 l
+35.0131 137.235 l
+S
+newpath
+23.8639 120.550 m
+40.0595 122.083 l
+35.1279 119.602 l
+S
+newpath
+23.9392 102.163 m
+39.9843 104.821 l
+35.2430 102.002 l
+S
+newpath
+23.8668 193.412 m
+40.0566 191.820 l
+34.7307 190.328 l
+S
+newpath
+23.8436 175.308 m
+40.0798 174.273 l
+34.8098 172.600 l
+S
+newpath
+23.8284 157.129 m
+40.0951 156.803 l
+34.9053 154.901 l
+S
+newpath
+41.9447 193.412 m
+58.1345 191.820 l
+52.8085 190.328 l
+S
+newpath
+41.9215 175.308 m
+58.1577 174.273 l
+52.8877 172.600 l
+S
+newpath
+41.9063 157.129 m
+58.1730 156.803 l
+52.9832 154.901 l
+S
+newpath
+41.9091 138.875 m
+58.1702 139.408 l
+53.0910 137.235 l
+S
+newpath
+41.9418 120.550 m
+58.1374 122.083 l
+53.2058 119.602 l
+S
+newpath
+42.0171 102.163 m
+58.0622 104.821 l
+53.3208 102.002 l
+S
+newpath
+96.1784 193.412 m
+112.368 191.820 l
+107.042 190.328 l
+S
+newpath
+96.1552 175.308 m
+112.391 174.273 l
+107.121 172.600 l
+S
+newpath
+96.1399 157.129 m
+112.406 156.803 l
+107.216 154.901 l
+S
+newpath
+96.1427 138.875 m
+112.403 139.408 l
+107.324 137.235 l
+S
+newpath
+96.1755 120.550 m
+112.371 122.083 l
+107.439 119.602 l
+S
+newpath
+96.2507 102.163 m
+112.295 104.821 l
+107.554 102.002 l
+S
+newpath
+96.3798 83.7272 m
+112.166 87.6078 l
+107.662 84.4339 l
+S
+newpath
+96.5708 65.2621 m
+111.975 70.4234 l
+107.754 66.8911 l
+S
+newpath
+96.8258 46.7905 m
+111.720 53.2455 l
+107.824 49.3667 l
+S
+newpath
+97.1406 28.3360 m
+111.406 36.0506 l
+107.868 31.8507 l
+S
+newpath
+150.435 211.440 m
+166.578 209.441 l
+161.215 208.084 l
+S
+newpath
+150.452 229.394 m
+166.561 227.136 l
+161.176 225.865 l
+S
+newpath
+168.530 229.394 m
+184.638 227.136 l
+179.254 225.865 l
+S
+newpath
+168.513 211.440 m
+184.656 209.441 l
+179.293 208.084 l
+S
+newpath
+150.459 265.087 m
+166.554 262.742 l
+161.163 261.501 l
+S
+newpath
+150.446 282.825 m
+166.567 280.653 l
+161.189 279.354 l
+S
+newpath
+168.524 282.825 m
+184.645 280.653 l
+179.267 279.354 l
+S
+newpath
+168.537 265.087 m
+184.632 262.742 l
+179.241 261.501 l
+S
+newpath
+114.297 229.394 m
+130.405 227.136 l
+125.020 225.865 l
+S
+newpath
+114.279 211.440 m
+130.422 209.441 l
+125.060 208.084 l
+S
+newpath
+114.291 282.825 m
+130.411 280.653 l
+125.033 279.354 l
+S
+newpath
+114.303 265.087 m
+130.398 262.742 l
+125.007 261.501 l
+S
+newpath
+114.305 247.276 m
+130.396 244.903 l
+125.002 243.671 l
+S
+newpath
+132.369 282.825 m
+148.489 280.653 l
+143.111 279.354 l
+S
+newpath
+132.381 265.087 m
+148.476 262.742 l
+143.085 261.501 l
+S
+newpath
+132.383 247.276 m
+148.474 244.903 l
+143.080 243.671 l
+S
+newpath
+132.375 229.394 m
+148.483 227.136 l
+143.098 225.865 l
+S
+newpath
+132.357 211.440 m
+148.500 209.441 l
+143.137 208.084 l
+S
+newpath
+150.461 247.276 m
+166.552 244.903 l
+161.158 243.671 l
+S
+newpath
+168.539 247.276 m
+184.630 244.903 l
+179.236 243.671 l
+S
+newpath
+150.426 300.491 m
+166.587 298.637 l
+161.237 297.232 l
+S
+newpath
+150.381 335.598 m
+166.632 334.829 l
+161.391 333.069 l
+S
+newpath
+150.402 318.082 m
+166.611 316.695 l
+161.305 315.136 l
+S
+newpath
+168.459 335.598 m
+184.710 334.829 l
+179.469 333.069 l
+S
+newpath
+168.480 318.082 m
+184.689 316.695 l
+179.383 315.136 l
+S
+newpath
+168.504 300.491 m
+184.665 298.637 l
+179.315 297.232 l
+S
+newpath
+150.371 353.038 m
+166.642 353.038 l
+161.492 351.033 l
+S
+newpath
+168.449 353.038 m
+184.719 353.038 l
+179.570 351.033 l
+S
+newpath
+114.225 335.598 m
+130.476 334.829 l
+125.235 333.069 l
+S
+newpath
+114.246 318.082 m
+130.455 316.695 l
+125.149 315.136 l
+S
+newpath
+114.270 300.491 m
+130.431 298.637 l
+125.081 297.232 l
+S
+newpath
+114.216 353.038 m
+130.486 353.038 l
+125.336 351.033 l
+S
+newpath
+132.294 353.038 m
+148.564 353.038 l
+143.414 351.033 l
+S
+newpath
+132.303 335.598 m
+148.554 334.829 l
+143.313 333.069 l
+S
+newpath
+132.324 318.082 m
+148.533 316.695 l
+143.227 315.136 l
+S
+newpath
+132.348 300.491 m
+148.509 298.637 l
+143.159 297.232 l
+S
+newpath
+78.1237 211.440 m
+94.2670 209.441 l
+88.9042 208.084 l
+S
+newpath
+78.1414 229.394 m
+94.2494 227.136 l
+88.8648 225.865 l
+S
+newpath
+60.0635 229.394 m
+76.1715 227.136 l
+70.7869 225.865 l
+S
+newpath
+60.0459 211.440 m
+76.1892 209.441 l
+70.8263 208.084 l
+S
+newpath
+78.1477 265.087 m
+94.2431 262.742 l
+88.8515 261.501 l
+S
+newpath
+78.1353 282.825 m
+94.2555 280.653 l
+88.8780 279.354 l
+S
+newpath
+60.0574 282.825 m
+76.1776 280.653 l
+70.8001 279.354 l
+S
+newpath
+60.0698 265.087 m
+76.1652 262.742 l
+70.7737 261.501 l
+S
+newpath
+23.9077 229.394 m
+40.0158 227.136 l
+34.6312 225.865 l
+S
+newpath
+23.8901 211.440 m
+40.0334 209.441 l
+34.6705 208.084 l
+S
+newpath
+23.9016 282.825 m
+40.0219 280.653 l
+34.6443 279.354 l
+S
+newpath
+23.9140 265.087 m
+40.0094 262.742 l
+34.6179 261.501 l
+S
+newpath
+23.9162 247.276 m
+40.0073 244.903 l
+34.6135 243.671 l
+S
+newpath
+41.9795 282.825 m
+58.0998 280.653 l
+52.7222 279.354 l
+S
+newpath
+41.9919 265.087 m
+58.0873 262.742 l
+52.6958 261.501 l
+S
+newpath
+41.9941 247.276 m
+58.0852 244.903 l
+52.6914 243.671 l
+S
+newpath
+41.9856 229.394 m
+58.0936 227.136 l
+52.7090 225.865 l
+S
+newpath
+41.9680 211.440 m
+58.1113 209.441 l
+52.7484 208.084 l
+S
+newpath
+60.0720 247.276 m
+76.1630 244.903 l
+70.7692 243.671 l
+S
+newpath
+78.1499 247.276 m
+94.2409 244.903 l
+88.8471 243.671 l
+S
+newpath
+78.1148 300.491 m
+94.2759 298.637 l
+88.9258 297.232 l
+S
+newpath
+78.0697 335.598 m
+94.3211 334.829 l
+89.0799 333.069 l
+S
+newpath
+59.9918 335.598 m
+76.2432 334.829 l
+71.0020 333.069 l
+S
+newpath
+60.0129 318.082 m
+76.2221 316.695 l
+70.9159 315.136 l
+S
+newpath
+60.0370 300.491 m
+76.1980 298.637 l
+70.8479 297.232 l
+S
+newpath
+78.0908 318.082 m
+94.3000 316.695 l
+88.9938 315.136 l
+S
+newpath
+78.0603 353.038 m
+94.3304 353.038 l
+89.1808 351.033 l
+S
+newpath
+59.9825 353.038 m
+76.2525 353.038 l
+71.1030 351.033 l
+S
+newpath
+23.8361 335.598 m
+40.0874 334.829 l
+34.8462 333.069 l
+S
+newpath
+23.8572 318.082 m
+40.0663 316.695 l
+34.7602 315.136 l
+S
+newpath
+23.8812 300.491 m
+40.0423 298.637 l
+34.6922 297.232 l
+S
+newpath
+23.8267 353.038 m
+40.0968 353.038 l
+34.9472 351.033 l
+S
+newpath
+41.9046 353.038 m
+58.1747 353.038 l
+53.0251 351.033 l
+S
+newpath
+41.9139 335.598 m
+58.1653 334.829 l
+52.9241 333.069 l
+S
+newpath
+41.9350 318.082 m
+58.1442 316.695 l
+52.8380 315.136 l
+S
+newpath
+41.9591 300.491 m
+58.1202 298.637 l
+52.7700 297.232 l
+S
+newpath
+96.1382 353.038 m
+112.408 353.038 l
+107.258 351.033 l
+S
+newpath
+96.1476 335.598 m
+112.399 334.829 l
+107.157 333.069 l
+S
+newpath
+96.1687 318.082 m
+112.377 316.695 l
+107.071 315.136 l
+S
+newpath
+96.1927 300.491 m
+112.353 298.637 l
+107.003 297.232 l
+S
+newpath
+96.2131 282.825 m
+112.333 280.653 l
+106.955 279.354 l
+S
+newpath
+96.2256 265.087 m
+112.321 262.742 l
+106.929 261.501 l
+S
+newpath
+96.2277 247.276 m
+112.318 244.903 l
+106.925 243.671 l
+S
+newpath
+96.2192 229.394 m
+112.327 227.136 l
+106.942 225.865 l
+S
+newpath
+96.2016 211.440 m
+112.345 209.441 l
+106.982 208.084 l
+S
+newpath
+186.527 353.038 m
+202.797 353.038 l
+197.648 351.033 l
+S
+newpath
+186.537 335.598 m
+202.788 334.829 l
+197.547 333.069 l
+S
+newpath
+186.558 318.082 m
+202.767 316.695 l
+197.461 315.136 l
+S
+newpath
+186.582 300.491 m
+202.743 298.637 l
+197.393 297.232 l
+S
+newpath
+186.602 282.825 m
+202.722 280.653 l
+197.345 279.354 l
+S
+newpath
+186.615 265.087 m
+202.710 262.742 l
+197.318 261.501 l
+S
+newpath
+186.617 247.276 m
+202.708 244.903 l
+197.314 243.671 l
+S
+newpath
+186.608 229.394 m
+202.716 227.136 l
+197.332 225.865 l
+S
+newpath
+186.591 211.440 m
+202.734 209.441 l
+197.371 208.084 l
+S
+newpath
+186.567 193.412 m
+202.757 191.820 l
+197.431 190.328 l
+S
+newpath
+186.544 175.308 m
+202.780 174.273 l
+197.510 172.600 l
+S
+newpath
+186.529 157.129 m
+202.796 156.803 l
+197.606 154.901 l
+S
+newpath
+186.532 138.875 m
+202.793 139.408 l
+197.714 137.235 l
+S
+newpath
+186.564 120.550 m
+202.760 122.083 l
+197.828 119.602 l
+S
+newpath
+186.640 102.163 m
+202.685 104.821 l
+197.944 102.002 l
+S
+newpath
+186.769 83.7272 m
+202.556 87.6078 l
+198.051 84.4339 l
+S
+newpath
+186.960 65.2621 m
+202.365 70.4234 l
+198.143 66.8911 l
+S
+newpath
+187.215 46.7905 m
+202.110 53.2455 l
+198.214 49.3667 l
+S
+newpath
+187.530 28.3360 m
+201.795 36.0506 l
+198.258 31.8507 l
+S
+newpath
+187.894 9.91922 m
+201.431 18.8179 l
+198.274 14.3329 l
+S
+cliprestore
+newpath
+0 0 m
+0 390.000 l
+390.000 390.000 l
+390.000 0 l
+h
+W
+Q
+q
+3.00000 w
+15.4033 -3.00000 377.596 372.407 rc
+newpath
+31.9617 221.401 m
+39.1176 220.439 l
+46.2734 219.482 l
+53.4292 218.531 l
+60.5851 217.587 l
+67.7409 216.650 l
+74.8967 215.719 l
+82.0525 214.795 l
+89.2084 213.877 l
+96.3642 212.967 l
+103.520 212.064 l
+110.675 211.168 l
+117.831 210.280 l
+124.987 209.399 l
+132.143 208.526 l
+139.299 207.660 l
+146.455 206.802 l
+153.610 205.952 l
+160.766 205.110 l
+167.922 204.275 l
+175.078 203.449 l
+182.234 202.631 l
+189.390 201.821 l
+196.545 201.019 l
+203.701 200.225 l
+210.857 199.440 l
+218.013 198.663 l
+225.169 197.894 l
+232.325 197.134 l
+239.480 196.382 l
+246.636 195.639 l
+253.792 194.904 l
+260.948 194.178 l
+268.104 193.460 l
+275.260 192.750 l
+282.415 192.049 l
+289.571 191.357 l
+296.727 190.673 l
+303.883 189.997 l
+311.039 189.330 l
+318.194 188.671 l
+325.350 188.021 l
+332.506 187.379 l
+339.662 186.746 l
+346.818 186.121 l
+353.974 185.504 l
+361.129 184.896 l
+368.285 184.295 l
+375.441 183.703 l
+S
+cliprestore
+newpath
+0 0 m
+0 390.000 l
+390.000 390.000 l
+390.000 0 l
+h
+W
+Q
+q
+3.00000 w
+15.4033 -3.00000 377.596 372.407 rc
+newpath
+31.9617 20.8322 m
+39.1176 25.1244 l
+46.2734 29.2219 l
+53.4292 33.1369 l
+60.5851 36.8805 l
+67.7409 40.4630 l
+74.8967 43.8937 l
+82.0525 47.1815 l
+89.2084 50.3344 l
+96.3642 53.3599 l
+103.520 56.2651 l
+110.675 59.0562 l
+117.831 61.7394 l
+124.987 64.3201 l
+132.143 66.8037 l
+139.299 69.1951 l
+146.455 71.4988 l
+153.610 73.7189 l
+160.766 75.8596 l
+167.922 77.9247 l
+175.078 79.9175 l
+182.234 81.8414 l
+189.390 83.6997 l
+196.545 85.4950 l
+203.701 87.2303 l
+210.857 88.9082 l
+218.013 90.5310 l
+225.169 92.1012 l
+232.325 93.6209 l
+239.480 95.0922 l
+246.636 96.5171 l
+253.792 97.8974 l
+260.948 99.2349 l
+268.104 100.531 l
+275.260 101.788 l
+282.415 103.007 l
+289.571 104.189 l
+296.727 105.337 l
+303.883 106.450 l
+311.039 107.531 l
+318.194 108.580 l
+325.350 109.599 l
+332.506 110.589 l
+339.662 111.551 l
+346.818 112.485 l
+353.974 113.393 l
+361.129 114.276 l
+368.285 115.134 l
+375.441 115.969 l
+S
+cliprestore
+newpath
+0 0 m
+0 390.000 l
+390.000 390.000 l
+390.000 0 l
+h
+W
+Q
+Q
+q
+1.00000 w
+2 J
+0 j
+q
+0 J
+1 j
+newpath
+18.4033 353.038 m
+389.000 353.038 l
+S
+Q
+0 J
+1 j
+[ 1.00000 0 0 1.00000 0 0 ] concat
+q
+[ 1.00000 0 0 1.00000 0 0 ] concat
+q
+205 374 11 15 rc
+newpath
+211.093 378.281 m
+211.093 380.187 l
+212.453 380.187 l
+212.453 380.625 l
+211.093 380.625 l
+211.093 384.406 l
+211.093 384.781 211.148 385.033 211.257 385.164  c
+211.367 385.294 211.505 385.359 211.671 385.359  c
+211.807 385.359 211.942 385.315 212.078 385.226  c
+212.213 385.138 212.317 385.010 212.390 384.843  c
+212.625 384.843 l
+212.479 385.260 212.270 385.572 212.000 385.781  c
+211.729 385.989 211.453 386.093 211.171 386.093  c
+210.974 386.093 210.781 386.039 210.593 385.929  c
+210.406 385.820 210.268 385.666 210.179 385.468  c
+210.091 385.270 210.046 384.963 210.046 384.546  c
+210.046 380.625 l
+209.125 380.625 l
+209.125 380.421 l
+209.354 380.328 209.591 380.169 209.835 379.945  c
+210.080 379.721 210.296 379.458 210.484 379.156  c
+210.588 379.000 210.724 378.708 210.890 378.281  c
+211.093 378.281 l
+h
+f
+Q
+cliprestore
+newpath
+0 0 m
+0 390.000 l
+390.000 390.000 l
+390.000 0 l
+h
+W
+Q
+[ 1.00000 0 0 1.00000 5.00000 5.00000 ] defaultmatrix matrix concatmatrix setmatrix
+[ 1.00000 0 0 1.00000 0 0 ] concat
+q
+q
+0 w
+newpath
+31.9617 353.038 m
+31.9617 357.038 l
+S
+[ 1.00000 0 0 1.00000 -5.00000 -5.00000 ] concat
+newpath
+28.4687 369.750 m
+28.4687 368.770 28.6171 367.924 28.9140 367.210  c
+29.2109 366.497 29.6041 365.968 30.0937 365.625  c
+30.4791 365.354 30.8750 365.218 31.2812 365.218  c
+31.9375 365.218 32.5260 365.552 33.0468 366.218  c
+33.7031 367.052 34.0312 368.182 34.0312 369.609  c
+34.0312 370.609 33.8880 371.458 33.6015 372.156  c
+33.3151 372.854 32.9479 373.362 32.5000 373.679  c
+32.0520 373.997 31.6250 374.156 31.2187 374.156  c
+30.3958 374.156 29.7083 373.671 29.1562 372.703  c
+28.6979 371.880 28.4687 370.895 28.4687 369.750  c
+h
+29.7187 369.906 m
+29.7187 371.093 29.8645 372.062 30.1562 372.812  c
+30.3958 373.437 30.7552 373.750 31.2343 373.750  c
+31.4635 373.750 31.7005 373.648 31.9453 373.445  c
+32.1901 373.242 32.3750 372.895 32.5000 372.406  c
+32.6979 371.687 32.7968 370.661 32.7968 369.328  c
+32.7968 368.349 32.6927 367.531 32.4843 366.875  c
+32.3385 366.385 32.1406 366.041 31.8906 365.843  c
+31.7239 365.708 31.5156 365.640 31.2656 365.640  c
+30.9843 365.640 30.7291 365.765 30.5000 366.015  c
+30.1979 366.369 29.9921 366.924 29.8828 367.679  c
+29.7734 368.434 29.7187 369.177 29.7187 369.906  c
+h
+f
+[ 1.00000 0 0 1.00000 5.00000 5.00000 ] concat
+Q
+q
+0 w
+newpath
+100.657 353.038 m
+100.657 357.038 l
+S
+[ 1.00000 0 0 1.00000 -5.00000 -5.00000 ] concat
+newpath
+97.4687 371.750 m
+97.4687 370.770 97.6171 369.924 97.9140 369.210  c
+98.2109 368.497 98.6041 367.968 99.0937 367.625  c
+99.4791 367.354 99.8750 367.218 100.281 367.218  c
+100.937 367.218 101.526 367.552 102.046 368.218  c
+102.703 369.052 103.031 370.182 103.031 371.609  c
+103.031 372.609 102.888 373.458 102.601 374.156  c
+102.315 374.854 101.947 375.362 101.500 375.679  c
+101.052 375.997 100.625 376.156 100.218 376.156  c
+99.3958 376.156 98.7083 375.671 98.1562 374.703  c
+97.6979 373.880 97.4687 372.895 97.4687 371.750  c
+h
+98.7187 371.906 m
+98.7187 373.093 98.8645 374.062 99.1562 374.812  c
+99.3958 375.437 99.7552 375.750 100.234 375.750  c
+100.463 375.750 100.700 375.648 100.945 375.445  c
+101.190 375.242 101.375 374.895 101.500 374.406  c
+101.697 373.687 101.796 372.661 101.796 371.328  c
+101.796 370.349 101.692 369.531 101.484 368.875  c
+101.338 368.385 101.140 368.041 100.890 367.843  c
+100.724 367.708 100.515 367.640 100.265 367.640  c
+99.9843 367.640 99.7291 367.765 99.5000 368.015  c
+99.1979 368.369 98.9921 368.924 98.8828 369.679  c
+98.7734 370.434 98.7187 371.177 98.7187 371.906  c
+h
+105.125 374.765 m
+105.322 374.765 105.489 374.835 105.625 374.976  c
+105.760 375.117 105.828 375.281 105.828 375.468  c
+105.828 375.666 105.760 375.833 105.625 375.968  c
+105.489 376.104 105.322 376.171 105.125 376.171  c
+104.927 376.171 104.760 376.104 104.625 375.968  c
+104.489 375.833 104.421 375.666 104.421 375.468  c
+104.421 375.270 104.489 375.104 104.625 374.968  c
+104.760 374.833 104.927 374.765 105.125 374.765  c
+h
+112.703 374.343 m
+112.109 376.000 l
+107.031 376.000 l
+107.031 375.765 l
+108.520 374.401 109.570 373.286 110.179 372.421  c
+110.789 371.557 111.093 370.770 111.093 370.062  c
+111.093 369.510 110.927 369.059 110.593 368.710  c
+110.260 368.362 109.859 368.187 109.390 368.187  c
+108.974 368.187 108.596 368.309 108.257 368.554  c
+107.919 368.799 107.671 369.161 107.515 369.640  c
+107.281 369.640 l
+107.385 368.859 107.656 368.260 108.093 367.843  c
+108.531 367.427 109.078 367.218 109.734 367.218  c
+110.432 367.218 111.015 367.442 111.484 367.890  c
+111.953 368.338 112.187 368.864 112.187 369.468  c
+112.187 369.906 112.083 370.343 111.875 370.781  c
+111.562 371.468 111.057 372.192 110.359 372.953  c
+109.307 374.109 108.645 374.807 108.375 375.046  c
+110.625 375.046 l
+111.083 375.046 111.403 375.028 111.585 374.992  c
+111.768 374.955 111.934 374.885 112.085 374.781  c
+112.237 374.677 112.364 374.531 112.468 374.343  c
+112.703 374.343 l
+h
+f
+[ 1.00000 0 0 1.00000 5.00000 5.00000 ] concat
+Q
+q
+0 w
+newpath
+169.353 353.038 m
+169.353 357.038 l
+S
+[ 1.00000 0 0 1.00000 -5.00000 -5.00000 ] concat
+newpath
+166.468 371.750 m
+166.468 370.770 166.617 369.924 166.914 369.210  c
+167.210 368.497 167.604 367.968 168.093 367.625  c
+168.479 367.354 168.875 367.218 169.281 367.218  c
+169.937 367.218 170.526 367.552 171.046 368.218  c
+171.703 369.052 172.031 370.182 172.031 371.609  c
+172.031 372.609 171.888 373.458 171.601 374.156  c
+171.315 374.854 170.947 375.362 170.500 375.679  c
+170.052 375.997 169.625 376.156 169.218 376.156  c
+168.395 376.156 167.708 375.671 167.156 374.703  c
+166.697 373.880 166.468 372.895 166.468 371.750  c
+h
+167.718 371.906 m
+167.718 373.093 167.864 374.062 168.156 374.812  c
+168.395 375.437 168.755 375.750 169.234 375.750  c
+169.463 375.750 169.700 375.648 169.945 375.445  c
+170.190 375.242 170.375 374.895 170.500 374.406  c
+170.697 373.687 170.796 372.661 170.796 371.328  c
+170.796 370.349 170.692 369.531 170.484 368.875  c
+170.338 368.385 170.140 368.041 169.890 367.843  c
+169.724 367.708 169.515 367.640 169.265 367.640  c
+168.984 367.640 168.729 367.765 168.500 368.015  c
+168.197 368.369 167.992 368.924 167.882 369.679  c
+167.773 370.434 167.718 371.177 167.718 371.906  c
+h
+174.125 374.765 m
+174.322 374.765 174.489 374.835 174.625 374.976  c
+174.760 375.117 174.828 375.281 174.828 375.468  c
+174.828 375.666 174.760 375.833 174.625 375.968  c
+174.489 376.104 174.322 376.171 174.125 376.171  c
+173.927 376.171 173.760 376.104 173.625 375.968  c
+173.489 375.833 173.421 375.666 173.421 375.468  c
+173.421 375.270 173.489 375.104 173.625 374.968  c
+173.760 374.833 173.927 374.765 174.125 374.765  c
+h
+181.796 372.828 m
+181.796 373.734 l
+180.640 373.734 l
+180.640 376.000 l
+179.593 376.000 l
+179.593 373.734 l
+175.953 373.734 l
+175.953 372.921 l
+179.953 367.218 l
+180.640 367.218 l
+180.640 372.828 l
+181.796 372.828 l
+h
+179.593 372.828 m
+179.593 368.546 l
+176.578 372.828 l
+179.593 372.828 l
+h
+f
+[ 1.00000 0 0 1.00000 5.00000 5.00000 ] concat
+Q
+q
+0 w
+newpath
+238.049 353.038 m
+238.049 357.038 l
+S
+[ 1.00000 0 0 1.00000 -5.00000 -5.00000 ] concat
+newpath
+235.468 371.750 m
+235.468 370.770 235.617 369.924 235.914 369.210  c
+236.210 368.497 236.604 367.968 237.093 367.625  c
+237.479 367.354 237.875 367.218 238.281 367.218  c
+238.937 367.218 239.526 367.552 240.046 368.218  c
+240.703 369.052 241.031 370.182 241.031 371.609  c
+241.031 372.609 240.888 373.458 240.601 374.156  c
+240.315 374.854 239.947 375.362 239.500 375.679  c
+239.052 375.997 238.625 376.156 238.218 376.156  c
+237.395 376.156 236.708 375.671 236.156 374.703  c
+235.697 373.880 235.468 372.895 235.468 371.750  c
+h
+236.718 371.906 m
+236.718 373.093 236.864 374.062 237.156 374.812  c
+237.395 375.437 237.755 375.750 238.234 375.750  c
+238.463 375.750 238.700 375.648 238.945 375.445  c
+239.190 375.242 239.375 374.895 239.500 374.406  c
+239.697 373.687 239.796 372.661 239.796 371.328  c
+239.796 370.349 239.692 369.531 239.484 368.875  c
+239.338 368.385 239.140 368.041 238.890 367.843  c
+238.724 367.708 238.515 367.640 238.265 367.640  c
+237.984 367.640 237.729 367.765 237.500 368.015  c
+237.197 368.369 236.992 368.924 236.882 369.679  c
+236.773 370.434 236.718 371.177 236.718 371.906  c
+h
+243.125 374.765 m
+243.322 374.765 243.489 374.835 243.625 374.976  c
+243.760 375.117 243.828 375.281 243.828 375.468  c
+243.828 375.666 243.760 375.833 243.625 375.968  c
+243.489 376.104 243.322 376.171 243.125 376.171  c
+242.927 376.171 242.760 376.104 242.625 375.968  c
+242.489 375.833 242.421 375.666 242.421 375.468  c
+242.421 375.270 242.489 375.104 242.625 374.968  c
+242.760 374.833 242.927 374.765 243.125 374.765  c
+h
+250.578 367.218 m
+250.578 367.453 l
+250.015 367.505 249.557 367.614 249.203 367.781  c
+248.849 367.947 248.500 368.203 248.156 368.546  c
+247.812 368.890 247.528 369.273 247.304 369.695  c
+247.080 370.117 246.890 370.614 246.734 371.187  c
+247.349 370.770 247.963 370.562 248.578 370.562  c
+249.161 370.562 249.669 370.799 250.101 371.273  c
+250.533 371.747 250.750 372.359 250.750 373.109  c
+250.750 373.828 250.531 374.484 250.093 375.078  c
+249.572 375.796 248.880 376.156 248.015 376.156  c
+247.421 376.156 246.921 375.958 246.515 375.562  c
+245.713 374.812 245.312 373.833 245.312 372.625  c
+245.312 371.854 245.466 371.122 245.773 370.429  c
+246.080 369.737 246.520 369.119 247.093 368.578  c
+247.666 368.036 248.216 367.674 248.742 367.492  c
+249.268 367.309 249.755 367.218 250.203 367.218  c
+250.578 367.218 l
+h
+246.625 371.656 m
+246.552 372.229 246.515 372.692 246.515 373.046  c
+246.515 373.453 246.591 373.893 246.742 374.367  c
+246.893 374.841 247.114 375.218 247.406 375.500  c
+247.625 375.697 247.890 375.796 248.203 375.796  c
+248.567 375.796 248.895 375.622 249.187 375.273  c
+249.479 374.924 249.625 374.432 249.625 373.796  c
+249.625 373.067 249.479 372.440 249.187 371.914  c
+248.895 371.388 248.489 371.125 247.968 371.125  c
+247.802 371.125 247.627 371.158 247.445 371.226  c
+247.263 371.294 246.989 371.437 246.625 371.656  c
+h
+f
+[ 1.00000 0 0 1.00000 5.00000 5.00000 ] concat
+Q
+q
+0 w
+newpath
+306.745 353.038 m
+306.745 357.038 l
+S
+[ 1.00000 0 0 1.00000 -5.00000 -5.00000 ] concat
+newpath
+303.468 371.750 m
+303.468 370.770 303.617 369.924 303.914 369.210  c
+304.210 368.497 304.604 367.968 305.093 367.625  c
+305.479 367.354 305.875 367.218 306.281 367.218  c
+306.937 367.218 307.526 367.552 308.046 368.218  c
+308.703 369.052 309.031 370.182 309.031 371.609  c
+309.031 372.609 308.888 373.458 308.601 374.156  c
+308.315 374.854 307.947 375.362 307.500 375.679  c
+307.052 375.997 306.625 376.156 306.218 376.156  c
+305.395 376.156 304.708 375.671 304.156 374.703  c
+303.697 373.880 303.468 372.895 303.468 371.750  c
+h
+304.718 371.906 m
+304.718 373.093 304.864 374.062 305.156 374.812  c
+305.395 375.437 305.755 375.750 306.234 375.750  c
+306.463 375.750 306.700 375.648 306.945 375.445  c
+307.190 375.242 307.375 374.895 307.500 374.406  c
+307.697 373.687 307.796 372.661 307.796 371.328  c
+307.796 370.349 307.692 369.531 307.484 368.875  c
+307.338 368.385 307.140 368.041 306.890 367.843  c
+306.724 367.708 306.515 367.640 306.265 367.640  c
+305.984 367.640 305.729 367.765 305.500 368.015  c
+305.197 368.369 304.992 368.924 304.882 369.679  c
+304.773 370.434 304.718 371.177 304.718 371.906  c
+h
+311.125 374.765 m
+311.322 374.765 311.489 374.835 311.625 374.976  c
+311.760 375.117 311.828 375.281 311.828 375.468  c
+311.828 375.666 311.760 375.833 311.625 375.968  c
+311.489 376.104 311.322 376.171 311.125 376.171  c
+310.927 376.171 310.760 376.104 310.625 375.968  c
+310.489 375.833 310.421 375.666 310.421 375.468  c
+310.421 375.270 310.489 375.104 310.625 374.968  c
+310.760 374.833 310.927 374.765 311.125 374.765  c
+h
+315.250 371.671 m
+314.562 371.109 314.119 370.658 313.921 370.320  c
+313.724 369.981 313.625 369.630 313.625 369.265  c
+313.625 368.703 313.841 368.221 314.273 367.820  c
+314.705 367.419 315.281 367.218 316.000 367.218  c
+316.697 367.218 317.257 367.406 317.679 367.781  c
+318.101 368.156 318.312 368.583 318.312 369.062  c
+318.312 369.385 318.197 369.713 317.968 370.046  c
+317.739 370.380 317.265 370.776 316.546 371.234  c
+317.286 371.807 317.776 372.260 318.015 372.593  c
+318.338 373.020 318.500 373.474 318.500 373.953  c
+318.500 374.557 318.270 375.075 317.812 375.507  c
+317.354 375.940 316.750 376.156 316.000 376.156  c
+315.177 376.156 314.536 375.901 314.078 375.390  c
+313.713 374.974 313.531 374.520 313.531 374.031  c
+313.531 373.656 313.661 373.281 313.921 372.906  c
+314.182 372.531 314.625 372.119 315.250 371.671  c
+h
+316.234 370.984 m
+316.744 370.526 317.067 370.164 317.203 369.898  c
+317.338 369.632 317.406 369.333 317.406 369.000  c
+317.406 368.562 317.281 368.216 317.031 367.960  c
+316.781 367.705 316.442 367.578 316.015 367.578  c
+315.578 367.578 315.224 367.703 314.953 367.953  c
+314.682 368.203 314.546 368.494 314.546 368.828  c
+314.546 369.046 314.604 369.268 314.718 369.492  c
+314.833 369.716 314.994 369.927 315.203 370.125  c
+316.234 370.984 l
+h
+315.546 371.906 m
+315.192 372.197 314.932 372.518 314.765 372.867  c
+314.599 373.216 314.515 373.593 314.515 374.000  c
+314.515 374.552 314.664 374.992 314.960 375.320  c
+315.257 375.648 315.635 375.812 316.093 375.812  c
+316.552 375.812 316.919 375.682 317.195 375.421  c
+317.471 375.161 317.609 374.849 317.609 374.484  c
+317.609 374.182 317.526 373.906 317.359 373.656  c
+317.067 373.208 316.463 372.625 315.546 371.906  c
+h
+f
+[ 1.00000 0 0 1.00000 5.00000 5.00000 ] concat
+Q
+q
+0 w
+newpath
+375.441 353.038 m
+375.441 357.038 l
+S
+[ 1.00000 0 0 1.00000 -5.00000 -5.00000 ] concat
+newpath
+378.531 368.234 m
+380.625 367.218 l
+380.828 367.218 l
+380.828 374.484 l
+380.828 374.963 380.849 375.263 380.890 375.382  c
+380.932 375.502 381.015 375.593 381.140 375.656  c
+381.265 375.718 381.520 375.755 381.906 375.765  c
+381.906 376.000 l
+378.671 376.000 l
+378.671 375.765 l
+379.078 375.755 379.341 375.718 379.460 375.656  c
+379.580 375.593 379.664 375.510 379.710 375.406  c
+379.757 375.302 379.781 374.994 379.781 374.484  c
+379.781 369.843 l
+379.781 369.208 379.760 368.802 379.718 368.625  c
+379.687 368.489 379.632 368.390 379.554 368.328  c
+379.476 368.265 379.380 368.234 379.265 368.234  c
+379.109 368.234 378.895 368.302 378.625 368.437  c
+378.531 368.234 l
+h
+f
+[ 1.00000 0 0 1.00000 5.00000 5.00000 ] concat
+Q
+q
+0 w
+newpath
+66.3097 353.038 m
+66.3097 355.038 l
+S
+[ 1.00000 0 0 1.00000 -5.00000 -5.00000 ] concat
+[ 1.00000 0 0 1.00000 5.00000 5.00000 ] concat
+Q
+q
+0 w
+newpath
+135.005 353.038 m
+135.005 355.038 l
+S
+[ 1.00000 0 0 1.00000 -5.00000 -5.00000 ] concat
+[ 1.00000 0 0 1.00000 5.00000 5.00000 ] concat
+Q
+q
+0 w
+newpath
+203.701 353.038 m
+203.701 355.038 l
+S
+[ 1.00000 0 0 1.00000 -5.00000 -5.00000 ] concat
+[ 1.00000 0 0 1.00000 5.00000 5.00000 ] concat
+Q
+q
+0 w
+newpath
+272.397 353.038 m
+272.397 355.038 l
+S
+[ 1.00000 0 0 1.00000 -5.00000 -5.00000 ] concat
+[ 1.00000 0 0 1.00000 5.00000 5.00000 ] concat
+Q
+q
+0 w
+newpath
+341.093 353.038 m
+341.093 355.038 l
+S
+[ 1.00000 0 0 1.00000 -5.00000 -5.00000 ] concat
+[ 1.00000 0 0 1.00000 5.00000 5.00000 ] concat
+Q
+Q
+2 J
+0 j
+q
+0 J
+1 j
+newpath
+31.9617 366.407 m
+31.9617 1.00000 l
+S
+Q
+0 J
+1 j
+[ 1.00000 0 0 1.00000 0 0 ] concat
+q
+[ 1.00000 0 0 1.00000 0 0 ] concat
+q
+0 170 14 15 rc
+newpath
+4.17187 176.187 m
+6.90625 176.187 l
+6.90625 176.421 l
+6.72916 176.421 6.60677 176.450 6.53906 176.507  c
+6.47135 176.565 6.43750 176.645 6.43750 176.750  c
+6.43750 176.843 6.51041 177.000 6.65625 177.218  c
+6.70833 177.281 6.78125 177.385 6.87500 177.531  c
+7.28125 178.187 l
+7.76562 177.531 l
+8.06770 177.114 8.21875 176.849 8.21875 176.734  c
+8.21875 176.651 8.18229 176.578 8.10937 176.515  c
+8.03645 176.453 7.92187 176.421 7.76562 176.421  c
+7.76562 176.187 l
+9.71875 176.187 l
+9.71875 176.421 l
+9.52083 176.432 9.34375 176.489 9.18750 176.593  c
+8.97916 176.739 8.69270 177.052 8.32812 177.531  c
+7.54687 178.593 l
+8.98437 180.671 l
+9.33854 181.182 9.59375 181.489 9.75000 181.593  c
+9.90625 181.697 10.1041 181.755 10.3437 181.765  c
+10.3437 182.000 l
+7.59375 182.000 l
+7.59375 181.765 l
+7.79166 181.765 7.94270 181.724 8.04687 181.640  c
+8.13020 181.588 8.17187 181.510 8.17187 181.406  c
+8.17187 181.312 8.03645 181.067 7.76562 180.671  c
+6.90625 179.421 l
+5.96875 180.671 l
+5.68750 181.057 5.54687 181.286 5.54687 181.359  c
+5.54687 181.463 5.59375 181.557 5.68750 181.640  c
+5.78125 181.724 5.92187 181.765 6.10937 181.765  c
+6.10937 182.000 l
+4.21875 182.000 l
+4.21875 181.765 l
+4.36458 181.744 4.49479 181.692 4.60937 181.609  c
+4.77604 181.484 5.04687 181.171 5.42187 180.671  c
+6.64062 179.046 l
+5.54687 177.453 l
+5.23437 176.994 4.99218 176.708 4.82031 176.593  c
+4.64843 176.479 4.43229 176.421 4.17187 176.421  c
+4.17187 176.187 l
+h
+f
+Q
+cliprestore
+newpath
+0 0 m
+0 390.000 l
+390.000 390.000 l
+390.000 0 l
+h
+W
+Q
+[ 1.00000 0 0 1.00000 5.00000 5.00000 ] defaultmatrix matrix concatmatrix setmatrix
+[ 1.00000 0 0 1.00000 0 0 ] concat
+q
+q
+0 w
+newpath
+31.9617 353.038 m
+27.9617 353.038 l
+S
+Q
+q
+0 w
+newpath
+31.9617 285.304 m
+27.9617 285.304 l
+S
+[ 1.00000 0 0 1.00000 -5.00000 -5.00000 ] concat
+newpath
+24.5312 287.234 m
+26.6250 286.218 l
+26.8281 286.218 l
+26.8281 293.484 l
+26.8281 293.963 26.8489 294.263 26.8906 294.382  c
+26.9322 294.502 27.0156 294.593 27.1406 294.656  c
+27.2656 294.718 27.5208 294.755 27.9062 294.765  c
+27.9062 295.000 l
+24.6718 295.000 l
+24.6718 294.765 l
+25.0781 294.755 25.3411 294.718 25.4609 294.656  c
+25.5807 294.593 25.6640 294.510 25.7109 294.406  c
+25.7578 294.302 25.7812 293.994 25.7812 293.484  c
+25.7812 288.843 l
+25.7812 288.208 25.7604 287.802 25.7187 287.625  c
+25.6875 287.489 25.6328 287.390 25.5546 287.328  c
+25.4765 287.265 25.3802 287.234 25.2656 287.234  c
+25.1093 287.234 24.8958 287.302 24.6250 287.437  c
+24.5312 287.234 l
+h
+f
+[ 1.00000 0 0 1.00000 5.00000 5.00000 ] concat
+Q
+q
+0 w
+newpath
+31.9617 217.570 m
+27.9617 217.570 l
+S
+[ 1.00000 0 0 1.00000 -5.00000 -5.00000 ] concat
+newpath
+28.9531 225.343 m
+28.3593 227.000 l
+23.2812 227.000 l
+23.2812 226.765 l
+24.7708 225.401 25.8203 224.286 26.4296 223.421  c
+27.0390 222.557 27.3437 221.770 27.3437 221.062  c
+27.3437 220.510 27.1770 220.059 26.8437 219.710  c
+26.5104 219.362 26.1093 219.187 25.6406 219.187  c
+25.2239 219.187 24.8463 219.309 24.5078 219.554  c
+24.1692 219.799 23.9218 220.161 23.7656 220.640  c
+23.5312 220.640 l
+23.6354 219.859 23.9062 219.260 24.3437 218.843  c
+24.7812 218.427 25.3281 218.218 25.9843 218.218  c
+26.6822 218.218 27.2656 218.442 27.7343 218.890  c
+28.2031 219.338 28.4375 219.864 28.4375 220.468  c
+28.4375 220.906 28.3333 221.343 28.1250 221.781  c
+27.8125 222.468 27.3072 223.192 26.6093 223.953  c
+25.5572 225.109 24.8958 225.807 24.6250 226.046  c
+26.8750 226.046 l
+27.3333 226.046 27.6536 226.028 27.8359 225.992  c
+28.0182 225.955 28.1849 225.885 28.3359 225.781  c
+28.4869 225.677 28.6145 225.531 28.7187 225.343  c
+28.9531 225.343 l
+h
+f
+[ 1.00000 0 0 1.00000 5.00000 5.00000 ] concat
+Q
+q
+0 w
+newpath
+31.9617 149.836 m
+27.9617 149.836 l
+S
+[ 1.00000 0 0 1.00000 -5.00000 -5.00000 ] concat
+newpath
+23.6562 152.031 m
+23.9062 151.447 24.2187 151.000 24.5937 150.687  c
+24.9687 150.375 25.4322 150.218 25.9843 150.218  c
+26.6822 150.218 27.2135 150.442 27.5781 150.890  c
+27.8593 151.224 28.0000 151.578 28.0000 151.953  c
+28.0000 152.588 27.6041 153.239 26.8125 153.906  c
+27.3437 154.114 27.7447 154.411 28.0156 154.796  c
+28.2864 155.182 28.4218 155.635 28.4218 156.156  c
+28.4218 156.895 28.1822 157.536 27.7031 158.078  c
+27.0885 158.796 26.1979 159.156 25.0312 159.156  c
+24.4479 159.156 24.0520 159.083 23.8437 158.937  c
+23.6354 158.791 23.5312 158.635 23.5312 158.468  c
+23.5312 158.343 23.5807 158.237 23.6796 158.148  c
+23.7786 158.059 23.8958 158.015 24.0312 158.015  c
+24.1354 158.015 24.2447 158.031 24.3593 158.062  c
+24.4322 158.083 24.5963 158.158 24.8515 158.289  c
+25.1067 158.419 25.2812 158.500 25.3750 158.531  c
+25.5312 158.572 25.6979 158.593 25.8750 158.593  c
+26.3020 158.593 26.6770 158.427 27.0000 158.093  c
+27.3229 157.760 27.4843 157.364 27.4843 156.906  c
+27.4843 156.572 27.4114 156.250 27.2656 155.937  c
+27.1510 155.697 27.0260 155.515 26.8906 155.390  c
+26.7135 155.224 26.4661 155.072 26.1484 154.937  c
+25.8307 154.802 25.5052 154.734 25.1718 154.734  c
+24.9687 154.734 l
+24.9687 154.531 l
+25.3020 154.489 25.6380 154.369 25.9765 154.171  c
+26.3151 153.974 26.5599 153.737 26.7109 153.460  c
+26.8619 153.184 26.9375 152.875 26.9375 152.531  c
+26.9375 152.104 26.8020 151.755 26.5312 151.484  c
+26.2604 151.213 25.9218 151.078 25.5156 151.078  c
+24.8593 151.078 24.3125 151.427 23.8750 152.125  c
+23.6562 152.031 l
+h
+f
+[ 1.00000 0 0 1.00000 5.00000 5.00000 ] concat
+Q
+q
+0 w
+newpath
+31.9617 82.1026 m
+27.9617 82.1026 l
+S
+[ 1.00000 0 0 1.00000 -5.00000 -5.00000 ] concat
+newpath
+29.0468 88.8281 m
+29.0468 89.7343 l
+27.8906 89.7343 l
+27.8906 92.0000 l
+26.8437 92.0000 l
+26.8437 89.7343 l
+23.2031 89.7343 l
+23.2031 88.9218 l
+27.2031 83.2187 l
+27.8906 83.2187 l
+27.8906 88.8281 l
+29.0468 88.8281 l
+h
+26.8437 88.8281 m
+26.8437 84.5468 l
+23.8281 88.8281 l
+26.8437 88.8281 l
+h
+f
+[ 1.00000 0 0 1.00000 5.00000 5.00000 ] concat
+Q
+q
+0 w
+newpath
+31.9617 14.3685 m
+27.9617 14.3685 l
+S
+[ 1.00000 0 0 1.00000 -5.00000 -5.00000 ] concat
+newpath
+28.6406 15.3906 m
+28.1406 16.4687 l
+25.5625 16.4687 l
+25.0000 17.6250 l
+26.1145 17.7916 27.0000 18.2083 27.6562 18.8750  c
+28.2187 19.4479 28.5000 20.1250 28.5000 20.9062  c
+28.5000 21.3645 28.4088 21.7864 28.2265 22.1718  c
+28.0442 22.5572 27.8125 22.8854 27.5312 23.1562  c
+27.2500 23.4270 26.9375 23.6406 26.5937 23.7968  c
+26.1145 24.0364 25.6145 24.1562 25.0937 24.1562  c
+24.5833 24.1562 24.2109 24.0677 23.9765 23.8906  c
+23.7421 23.7135 23.6250 23.5208 23.6250 23.3125  c
+23.6250 23.1875 23.6744 23.0807 23.7734 22.9921  c
+23.8724 22.9036 23.9947 22.8593 24.1406 22.8593  c
+24.2447 22.8593 24.3385 22.8750 24.4218 22.9062  c
+24.5052 22.9375 24.6458 23.0260 24.8437 23.1718  c
+25.1666 23.3906 25.4895 23.5000 25.8125 23.5000  c
+26.3125 23.5000 26.7474 23.3125 27.1171 22.9375  c
+27.4869 22.5625 27.6718 22.1041 27.6718 21.5625  c
+27.6718 21.0416 27.5052 20.5572 27.1718 20.1093  c
+26.8385 19.6614 26.3802 19.3125 25.7968 19.0625  c
+25.3281 18.8750 24.6979 18.7656 23.9062 18.7343  c
+25.5625 15.3906 l
+28.6406 15.3906 l
+h
+f
+[ 1.00000 0 0 1.00000 5.00000 5.00000 ] concat
+Q
+q
+0 w
+newpath
+31.9617 319.171 m
+29.9617 319.171 l
+S
+[ 1.00000 0 0 1.00000 -5.00000 -5.00000 ] concat
+[ 1.00000 0 0 1.00000 5.00000 5.00000 ] concat
+Q
+q
+0 w
+newpath
+31.9617 251.437 m
+29.9617 251.437 l
+S
+[ 1.00000 0 0 1.00000 -5.00000 -5.00000 ] concat
+[ 1.00000 0 0 1.00000 5.00000 5.00000 ] concat
+Q
+q
+0 w
+newpath
+31.9617 183.703 m
+29.9617 183.703 l
+S
+[ 1.00000 0 0 1.00000 -5.00000 -5.00000 ] concat
+[ 1.00000 0 0 1.00000 5.00000 5.00000 ] concat
+Q
+q
+0 w
+newpath
+31.9617 115.969 m
+29.9617 115.969 l
+S
+[ 1.00000 0 0 1.00000 -5.00000 -5.00000 ] concat
+[ 1.00000 0 0 1.00000 5.00000 5.00000 ] concat
+Q
+q
+0 w
+newpath
+31.9617 48.2355 m
+29.9617 48.2355 l
+S
+[ 1.00000 0 0 1.00000 -5.00000 -5.00000 ] concat
+[ 1.00000 0 0 1.00000 5.00000 5.00000 ] concat
+Q
+Q
+2 J
+0 j
+Q
+Q
+cliprestore
+0 0 400 400 rc
+[ 1.00000 0 0 1.00000 0 0 ] concat
+[ 1.00000 0 0 1.00000 0 0 ] concat
+cliprestore
+1.00000 w
+2 J
+0 j
+end end restore showpage
+
+%%Trailer
+%%EOF

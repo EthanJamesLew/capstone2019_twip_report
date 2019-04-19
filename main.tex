@@ -1,0 +1,31 @@
+\documentclass[a4paper, llpt, oneside]{book}
+
+\input{config.tex}
+\input{glossary.tex}
+
+\title{Design and Verification of a Two-Wheeled Inverted Pendulum System}
+\author{Ethan Lew }
+%\keywords{Inverted Pendulum, TWIP, Formal Verification, Dynamical System}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\mainmatter
+\input{modeling/modeling.tex}
+\input{verification/verification.tex}
+
+\begin{appendices}
+\input{books/books.tex}}
+
+\chapter{Terminology}
+\printnoidxglossaries
+\end{appendices}
+
+% Create the bibliography
+\newpage
+\bibliographystyle{IEEEtran}
+\bibliography{bibliography}
+
+\end{document}

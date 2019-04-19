@@ -1,0 +1,166 @@
+\usepackage{amsmath,amssymb,amsthm,amsfonts}
+\usepackage{algorithm,algorithmic}
+\usepackage{graphicx,rotating}
+\usepackage{complexity}
+\usepackage{tikz}
+\usepackage{xspace}
+\usepackage{fix-cm}
+\usetikzlibrary{shadows}
+\usetikzlibrary{shapes,positioning,arrows}
+\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{shadows,arrows,patterns,automata,calc,intersections,fit,shapes.misc, decorations.markings}
+\usepackage[underline=false,rounded corners=true]{pgf-umlsd}
+\usepackage{todonotes}
+\usepackage{paralist}
+\setdefaultenum{1)}{(a)}{i)}{A)}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{array}  
+\usepackage[margin=0.75in]{geometry}  
+\usepackage{bm}
+                                                                  
+
+\usepackage{lmodern}
+\usepackage[english]{babel}
+
+
+\usepackage[
+pdfauthor={Ethan Lew},
+pdfsubject={DSP},
+pdftitle={EE521_Material},
+%pdfkeywords={},
+bookmarks=false,
+breaklinks=true,
+colorlinks=true,
+linkcolor=black,
+citecolor=black,
+urlcolor=black,
+%pdfstartpage=19,
+pdfpagelayout=SinglePage
+]{hyperref}
+
+\usepackage{wrapfig,epsfig}
+
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{todonotes}
+% Fonts
+\usepackage{microtype}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage[utf8]{inputenc}
+\usepackage{inconsolata}
+
+\usepackage{enumitem}
+
+\usepackage{float}
+\usepackage{listing}
+\usepackage{mdframed}
+\usepackage{caption,subcaption}
+\usepackage{bbm}
+
+\usepackage{pgfplots}
+
+\usepackage{circuitikz}
+
+\usepackage{appendix}
+
+\usepackage[acronym]{glossaries}
+\usepackage{glossaries}
+
+\pgfplotsset{
+    dirac/.style={
+        mark=triangle*,
+        mark options={scale=2},
+        ycomb,
+        scatter,
+        visualization depends on={y/abs(y)-1 \as \sign},
+        scatter/@pre marker code/.code={\scope[rotate=90*\sign,yshift=-2pt]}
+    }
+}
+
+% theorem type environments
+\newtheorem{thm}{Theorem}
+\newtheorem{prop}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{cor}{Corollary}
+\newtheorem{defn}{Definition}
+\newtheorem{assump}{Assumption}
+\newtheorem{example}{Example}
+\newtheorem{conjecture}{Conjecture}
+
+% frequently used symbols
+\newcommand{\bE}{\mathbb{E}}
+\newcommand{\bP}{\mathbb{P}}
+\newcommand{\bQ}{\mathbb{Q}}
+\newcommand{\bR}{\mathbb{R}}
+\newcommand{\bF}{\mathbb{F}}
+\newcommand{\bS}{\mathbb{S}}
+\newcommand{\bN}{\mathbb{N}}
+\newcommand{\bZ}{\mathbb{Z}}
+\newcommand{\sC}{{\mathcal C}} 
+\newcommand{\sD}{{\mathcal D}} 
+\newcommand{\sE}{{\mathcal E}} 
+\newcommand{\sF}{{\mathcal F}} 
+\newcommand{\sL}{{\mathcal L}} 
+\newcommand{\sH}{{\mathcal H}} 
+\newcommand{\sN}{{\mathcal N}} 
+\newcommand{\sO}{{\mathcal O}} 
+\newcommand{\sP}{{\mathcal P}} 
+\newcommand{\sR}{{\mathcal R}} 
+\newcommand{\sS}{{\mathcal S}}
+\newcommand{\sU}{{\mathcal U}} 
+\newcommand{\sX}{{\mathcal X}} 
+\newcommand{\sY}{{\mathcal Y}} 
+\newcommand{\sZ}{{\mathcal Z}}
+
+% operators
+\newcommand{\sign}{\mathop{\mathrm{sign}}}
+\newcommand{\supp}{\mathop{\mathrm{supp}}} % support
+\newcommand{\argmin}{\operatornamewithlimits{arg\ min}}
+\newcommand{\argmax}{\operatornamewithlimits{arg\ max}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\tr}{\text{tr}}
+\newcommand{\vecop}{\text{vec}}
+\newcommand{\st}{\operatorname{s.t.}}
+\newcommand{\cut}{\setminus}
+\newcommand{\ind}[1]{\mathbbm{1}\left\{#1\right\}} 
+\newcommand{\given}{\ | \ }
+
+% grouping operators
+\newcommand{\brac}[1]{\left[#1\right]}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\paren}[1]{\left(#1\right)}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\ip}[2]{\left\langle #1,#2 \right\rangle}
+
+% code commands
+\newcommand{\matlab}{\textsc{Matlab }}
+
+% header command
+\newcommand{\homework}[3]{
+    \pagestyle{myheadings}
+    \thispagestyle{plain}
+    \newpage
+    \setcounter{page}{1}
+    \setlength{\headsep}{10mm}
+    \noindent
+    \begin{center}
+    \framebox{
+        \vbox{\vspace{2mm}
+            \hbox to 6.28in { {\bf EE 521
+            \hfill Fall 2018} }
+        \vspace{4mm}
+        \hbox to 6.28in { {\Large \hfill #1 \hfill} }
+        \vspace{2mm}
+        \hbox to 6.28in { \Large \hfill  #2 \hfill }
+        \vspace{2mm}
+        \hbox to 6.28in { {\it  #3} \hfill {\it Yih-Chyun Jenq}}
+        \vspace{2mm}}
+   }
+   \end{center}
+   \markboth{Homework #1}{Homework #1}
+   \vspace*{4mm}
+}
